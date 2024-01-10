@@ -60,7 +60,7 @@ function play() {
 function playNotes(note) {
     let noteFile = note.replace("#", "-")
     let audio = new Howl({
-        src: [`/assets/audio/${noteFile}.mp3`],
+        src: [`assets/audio/${noteFile}.mp3`],
         autoplay: false,
         loop: false,
         volume: document.querySelector("#volume-control").value / 100
