@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Interval Training</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"
+        integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="https://www.jsalv.com">jsalv</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid text-center">
+        <div class="row content">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8 text-left">
+                <h1>Interval Training</h1>
+                <p>This should describe the stuff, yo.</p>
+                <hr>
+
+                <button id="play-btn">Play Audio</button>
+                <button id="interval-btn">Show Interval</button>
+                <button id="reset-btn">New Notes</button>
+
+                <br />
+                <br />
+
+                <div>
+                    <b>
+                        <p id="interval-val" style="display:none;"></p>
+                    </b>
+                </div>
+
+                <br />
+                <br />
+
+                <label for="volume-control">Volume:</label>
+                <input type="range" id="volume-control" step="10" value="80" style="width: 150px;">
+
+
+
+            </div>
+            <div class="col-sm-2 sidenav"></div>
+        </div>
+    </div>
+    <script src="teoria.js"></script>
+    <script src="intervalTraining.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#interval-btn").click(function () {
+                getInterval();
+                $("#interval-val").toggle();
+            });
+            $("#reset-btn").click(function () {
+                noteReset();
+                $("#interval-val").hide()
+            });
+            $("#play-btn").click(function () {
+                play();
+            });
+        });
+
+    </script>
+</body>
+
+</html>
