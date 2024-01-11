@@ -13,6 +13,23 @@ const NOTES = [
 ]
 const NOTE_VALUES = ["a", "a#", "b", "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#"]
 
+const INTERVAL_NAMES = {
+    "P1": "Perfect Unison",
+    "P4": "Perfect 4th",
+    "P5": "Perfect 5th",
+    "P8": "Perfect Octave",
+    "M2": "Major 2nd",
+    "M3": "Major 3rd",
+    "M6": "Major 6th",
+    "M7": "Major 7th",
+    "m2": "Minor 2nd",
+    "m3": "Minor 3rd",
+    "m6": "Minor 6th",
+    "m7": "Minor 7th",
+    "A4": "Augmented 4th",
+    "d5": "Diminished 5th"
+}
+
 // Used to see if we already got notes, before
 // the user resets them.
 document.NOTEPACKS = null;
@@ -85,5 +102,5 @@ function getInterval() {
 
     console.log(interval);
     let intervalValueItem = document.getElementById("interval-val");
-    intervalValueItem.innerText = `${interval.type()} ${interval.base()} -- ${interval.simple()}`.toUpperCase();
+    intervalValueItem.innerText = `${INTERVAL_NAMES[interval.simple()]}`
 }
