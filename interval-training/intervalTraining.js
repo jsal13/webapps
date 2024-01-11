@@ -43,6 +43,7 @@ function getRandomNotes() {
     let startingNote = randStartingNote + randOctave;
     let endingNote = randEndingNote + endingOctave;
 
+    console.log(startingNote, endingNote)
     return [startingNote, endingNote]
 }
 
