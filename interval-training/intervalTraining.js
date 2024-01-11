@@ -81,6 +81,12 @@ function getInterval() {
         teoria.note(document.NOTEPACKS[1])
     )
 
+    let orderedNotes = [document.NOTEPACKS[0], document.NOTEPACKS[0]].sort()
+    console.log("Ordered Notes:", orderedNotes)
+
+    let orderedInterval = teoria.Interval.between(orderedNotes[0], orderedNotes[1])
+    console.log("Ordered:", orderedInterval)
+
     let intervalValueItem = document.getElementById("interval-val");
     intervalValueItem.innerText = `${interval.type()} ${interval.base()}`.toUpperCase();
 }
