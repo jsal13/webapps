@@ -85,5 +85,5 @@ function getInterval() {
 
     console.log(interval);
     let intervalValueItem = document.getElementById("interval-val");
-    intervalValueItem.innerText = `${interval.type()} ${interval.base()}`.toUpperCase();
+    intervalValueItem.innerText = `${interval.type()} ${interval.base()} -- ${interval.simple()}`.toUpperCase();
 }
