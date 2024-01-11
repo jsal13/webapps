@@ -26,7 +26,9 @@ const INTERVAL_NAMES = {
     "m3": "Minor 3rd",
     "m6": "Minor 6th",
     "m7": "Minor 7th",
+    "A1": "Minor 2nd", // Equivalent.
     "A4": "Augmented 4th",
+    "d1": "Minor 2nd", // ???
     "d5": "Diminished 5th"
 }
 
@@ -93,14 +95,13 @@ function getInterval() {
         document.NOTEPACKS = getRandomNotes()
     }
 
-    console.log(document.NOTEPACKS[0])
-    console.log(document.NOTEPACKS[1])
     let interval = teoria.Interval.between(
         teoria.note(document.NOTEPACKS[0]),
         teoria.note(document.NOTEPACKS[1])
     )
+    interval.toString();
 
-    console.log(interval);
+    console.log(interval.simple(true).toString());
     let intervalValueItem = document.getElementById("interval-val");
-    intervalValueItem.innerText = `${INTERVAL_NAMES[interval.simple()]}`
+    intervalValueItem.innerText = `${INTERVAL_NAMES[interval.simple(true).toString()]}`
 }
