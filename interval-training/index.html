@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"
-        integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA=="
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"
+        integrity="sha512-Siyxh4gyNM5SaERNa9BOZSPcu/auHyFUWn9OVFD7MxI3/dVPQklE7tfqS+pLmPHF1zo6UdDaJAp/thihrf0c7w=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
@@ -34,6 +34,9 @@
                 <button id="play-btn">Play Audio</button>
                 <button id="interval-btn">Show Interval</button>
                 <button id="reset-btn">New Notes</button>
+                <br />
+                <label for="ascending-ckbx">Ascending Only</label>
+                <input type="checkbox" id="ascending-ckbx" />
 
                 <br />
                 <br />
@@ -56,12 +59,13 @@
             <div class="col-sm-2 sidenav"></div>
         </div>
     </div>
-    <script src="teoria.js"></script>
+    <!-- Must be loaded in this order. -->
+    <script src="utils.js"></script>
+    <script src="constants.js"></script>
     <script src="intervalTraining.js"></script>
     <script>
         $(document).ready(function () {
             $("#interval-btn").click(function () {
-                getInterval();
                 $("#interval-val").toggle();
             });
             $("#reset-btn").click(function () {
@@ -69,7 +73,8 @@
                 $("#interval-val").hide()
             });
             $("#play-btn").click(function () {
-                play();
+                let ascendingOnly = document.getElementById("ascending-ckbx").checked;
+                playNotes(ascendingOnly);
             });
         });
 
