@@ -81,11 +81,11 @@ function getInterval() {
         teoria.note(document.NOTEPACKS[1])
     )
 
-    let orderedNotes = [document.NOTEPACKS[0], document.NOTEPACKS[0]]
+    let orderedNotes = [document.NOTEPACKS[0], document.NOTEPACKS[1]]
     orderedNotes.sort();
     console.log("Ordered Notes:", orderedNotes)
 
-    let orderedInterval = teoria.Interval.between(orderedNotes[0], orderedNotes[1])
+    let orderedInterval = teoria.Interval.between(teoria.note(orderedNotes[0]), teoria.note(orderedNotes[1]))
     console.log("Ordered:", orderedInterval)
 
     let intervalValueItem = document.getElementById("interval-val");
