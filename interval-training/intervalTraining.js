@@ -4,11 +4,32 @@ document.NOTEPACKS = null;
 
 // Synth for tone.js.
 document.SYNTH = null;
+document.SYNTH_NAME = null;
 
-function synthInit() {
-    if (document.SYNTH === null) {
-        document.SYNTH = new Tone.Synth().toDestination();
+function synthInit(synthName, volume) {
+    // synthName can be one of:
+    // ["standard", "amsynth", "fmsynth", "monosynth"]
+    if ((document.SYNTH === null) || (document.SYNTH_NAME !== synthName)) {
+        document.SYNTH_NAME = synthName;
+        switch (synthName) {
+            case "standard":
+                document.SYNTH = new Tone.Synth().toDestination();
+                break;
+            case "fmsynth":
+                document.SYNTH = new Tone.FMSynth().toDestination();
+                break;
+            case "amsynth":
+                document.SYNTH = new Tone.AMSynth().toDestination();
+                break;
+            case "monosynth":
+                document.SYNTH = new Tone.MonoSynth().toDestination();
+                break;
+            default:
+                document.SYNTH = new Tone.Synth().toDestination();
+                break;
+        }
     }
+    document.SYNTH.volume.value = volume;
 }
 
 function noteReset() {
@@ -51,21 +72,18 @@ function getRandomNotes() {
     console.log("Notes:", startingNoteStr, endingNoteStr, "Interval:", randInterval)
 
     if ((startingNoteStr === undefined) || (endingNoteStr === undefined)) {
-        console.log("oh no.")
         getRandomNotes()
     }
     else {
-
         return [startingNoteStr, endingNoteStr, intervalName]
     }
 }
 
 function playNote(note) {
-    synthInit();
     document.SYNTH.triggerAttackRelease(note.toUpperCase(), "8n");
 }
 
-function playNotes(ascendingOnly) {
+function playNotes(ascendingOnly, synthName, volume) {
     var notes = getCurrentNotes()
     var note0 = notes[0];
     var note1 = notes[1];
@@ -81,7 +99,10 @@ function playNotes(ascendingOnly) {
         }
     }
 
+    // Init the synth.
+    synthInit(synthName, volume);
+
     // Leave time between notes.
-    setTimeout(() => { playNote(note0) }, TIME_BETWEEN_NOTES);
-    playNote(note1);
+    setTimeout(() => { playNote(note0, synthName) }, TIME_BETWEEN_NOTES);
+    playNote(note1, synthName);
 }

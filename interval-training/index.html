@@ -36,7 +36,21 @@
                 <button id="reset-btn">New Notes</button>
                 <br />
                 <label for="ascending-ckbx">Ascending Only</label>
-                <input type="checkbox" id="ascending-ckbx" />
+                <input type="checkbox" id="ascending-ckbx" checked="True" />
+                <br />
+                <div>
+                    <input type="radio" name="synthName" value="monosynth" checked="True">
+                    <label for="monosynth">Monosynth</label><br>
+
+                    <input type="radio" name="synthName" value="Standard">
+                    <label for="Standard">Standard</label><br>
+
+                    <input type="radio" name="synthName" value="amsynth">
+                    <label for="amsynth">AMSynth</label><br>
+
+                    <input type="radio" name="synthName" value="fmsynth">
+                    <label for="fmsynth">FMSynth</label><br>
+                </div>
 
                 <br />
                 <br />
@@ -47,11 +61,12 @@
                     </b>
                 </div>
 
+
                 <br />
                 <br />
 
                 <label for="volume-control">Volume:</label>
-                <input type="range" id="volume-control" step="10" value="80" style="width: 150px;">
+                <input type="range" id="volume-control" step="5" min="-40" max="0" value="-15" style="width: 150px;">
 
 
 
@@ -74,7 +89,10 @@
             });
             $("#play-btn").click(function () {
                 let ascendingOnly = document.getElementById("ascending-ckbx").checked;
-                playNotes(ascendingOnly);
+                let synthName = document.querySelector('input[name="synthName"]:checked').value;
+                let volume = document.getElementById("volume-control").value;
+                console.log("vol", volume)
+                playNotes(ascendingOnly, synthName, volume);
             });
         });
 
