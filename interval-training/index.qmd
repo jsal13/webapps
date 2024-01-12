@@ -1,0 +1,94 @@
+---
+title: "Interval Training"
+format: html
+---
+
+
+```{=html}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"
+        integrity="sha512-Siyxh4gyNM5SaERNa9BOZSPcu/auHyFUWn9OVFD7MxI3/dVPQklE7tfqS+pLmPHF1zo6UdDaJAp/thihrf0c7w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Must be loaded in this order. -->
+    <script src="utils.js"></script>
+    <script src="constants.js"></script>
+    <script src="intervalTraining.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#interval-btn").click(function () {
+                $("#interval-val").toggle();
+            });
+            $("#reset-btn").click(function () {
+                noteReset();
+                $("#interval-val").hide()
+            });
+            $("#play-btn").click(function () {
+                let ascendingOnly = document.getElementById("ascending-ckbx").checked;
+                let synthNameElement = document.getElementById("synth-name-select")
+                var synthName = synthNameElement.options[synthNameElement.selectedIndex].value;
+                let volume = document.getElementById("volume-control").value;
+                playNotes(ascendingOnly, synthName, volume);
+            });
+        });
+    </script>
+</head>
+```
+
+This is an app to help in Ear Training.
+
+```{=html}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <button id="play-btn">Play Audio</button>
+            <button id="reset-btn">New Notes</button>
+        </div>
+        <div class="col-sm-6">
+            <label for="ascending-ckbx">Ascending Only</label>
+            <input type="checkbox" id="ascending-ckbx" checked="True" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+        <button id="interval-btn">Show Interval</button>
+        </div>
+        <div class="col-sm-6">
+            <label for="synthName">Synth Type:</label>
+            <select name="synthName" id="synth-name-select">
+                <option value="monosynth" selected="selected">MonoSynth</option>
+                <option value="standard">Standard</option>
+                <option value="amsynth">AM Synth</option>
+                <option value="fmsynth">FM Synth</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-6">
+            <label for="volume-control">Volume:</label>
+            <input type="range" id="volume-control" 
+                   step="5" min="-40" max="0" value="-10" 
+                   style="width: 150px;">
+        </div>
+    </div>
+</div>
+
+
+
+<div>
+    <span class="answer-text">
+        <p id="interval-val" style="display:none;"></p>
+    </span>
+</div>
+
+
+
+
+```
