@@ -66,7 +66,11 @@ function getRandomNotes() {
     let startingNoteOctaveIndex = NOTES_WITH_OCTAVE.indexOf(startingNoteStr)
     let endingNoteStr = NOTES_WITH_OCTAVE[startingNoteOctaveIndex + randInterval]
 
-    let positiveRandInterval = Math.abs(randInterval)
+    if (randInterval < 0) {
+        let positiveRandInterval = 12 - Math.abs(randInterval);
+    } else {
+        let positiveRandInterval = randInterval;
+    }
     let intervalName = SEMITONE_TO_INTERVAL_MAPPING[positiveRandInterval]
 
     console.log("Notes:", startingNoteStr, endingNoteStr, "Interval:", randInterval)
