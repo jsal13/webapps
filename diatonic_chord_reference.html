@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Theory Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Core Colors */
+            --background: #fafafa;
+            --surface: #ffffff;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            
+            /* Typography */
+            --font-serif: 'Lora', serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 0.75rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            
+            /* Border Radius */
+            --border-radius: 0.5rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: var(--space-md) 0;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-lg);
+        }
+
+        /* App Container */
+        .app-container {
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: var(--space-xl);
+            margin: var(--space-xl) 0;
+        }
+
+        /* Typography */
+        h1, h2 {
+            font-family: var(--font-serif);
+            color: var(--text-primary);
+            margin-bottom: var(--space-lg);
+        }
+
+        h3 {
+            font-family: var(--font-serif);
+            color: var(--text-primary);
+            margin: var(--space-xl) 0 var(--space-lg) 0;
+            font-size: 1.25rem;
+        }
+
+        h4 {
+            font-family: var(--font-serif);
+            color: var(--text-primary);
+            margin-bottom: var(--space-md);
+            font-size: 1.1rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+
+        /* Controls */
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            padding: var(--space-lg);
+            background: #f8fafc;
+            border-radius: var(--border-radius);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-group label {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        select {
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            background: var(--surface);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Tables */
+        .diatonic-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: var(--space-xl);
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .diatonic-table th {
+            background: #f8fafc;
+            padding: var(--space-md);
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .diatonic-table td {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .diatonic-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .diatonic-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .roman-numeral {
+            font-family: var(--font-serif);
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .chord-name-cell {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .function-cell {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .interval-cell {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-family: monospace;
+        }
+
+        /* Scales */
+        #scales {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .scale-item {
+            background: var(--surface);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border);
+        }
+
+        .scale-name {
+            font-family: var(--font-serif);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+            font-size: 0.95rem;
+        }
+
+        .scale-notes {
+            color: var(--text-secondary);
+            font-family: monospace;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .diatonic-table {
+                font-size: 0.9rem;
+            }
+            
+            .diatonic-table th,
+            .diatonic-table td {
+                padding: var(--space-sm);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo">Music Theory Generator</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="app-container">
+            <div class="intro">
+                <h2>Music Theory Generator</h2>
+                <p>Explore diatonic chords, 7th chords, and scales for any key</p>
+            </div>
+
+            <section>
+                <h4>Select Mode and Key</h4>
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="keySelect">Root Note:</label>
+                        <select id="keySelect">
+                            <option value="C">C</option>
+                            <option value="C#">C# / Db</option>
+                            <option value="D">D</option>
+                            <option value="D#">D# / Eb</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                            <option value="F#">F# / Gb</option>
+                            <option value="G">G</option>
+                            <option value="G#">G# / Ab</option>
+                            <option value="A">A</option>
+                            <option value="A#">A# / Bb</option>
+                            <option value="B">B</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="modeSelect">Mode:</label>
+                        <select id="modeSelect">
+                            <option value="Ionian">Ionian (Major)</option>
+                            <option value="Dorian">Dorian</option>
+                            <option value="Phrygian">Phrygian</option>
+                            <option value="Lydian">Lydian</option>
+                            <option value="Mixolydian">Mixolydian</option>
+                            <option value="Aeolian">Aeolian (Natural Minor)</option>
+                            <option value="Locrian">Locrian</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>Diatonic Triads</h3>
+                <div id="diatonicChords"></div>
+            </section>
+
+            <section>
+                <h3>Diatonic 7th Chords</h3>
+                <div id="seventhChords"></div>
+            </section>
+
+            <section>
+                <h3>Scales</h3>
+                <div id="scales"></div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // Music Theory Data and Functions
+        const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        const ENHARMONIC_NAMES = {
+            'C#': 'C# / Db',
+            'D#': 'D# / Eb',
+            'F#': 'F# / Gb',
+            'G#': 'G# / Ab',
+            'A#': 'A# / Bb'
+        };
+
+        // Scale intervals (semitones from root)
+        const SCALE_PATTERNS = {
+            'Major': [0, 2, 4, 5, 7, 9, 11],
+            'Natural Minor': [0, 2, 3, 5, 7, 8, 10],
+            'Harmonic Minor': [0, 2, 3, 5, 7, 8, 11],
+            'Melodic Minor': [0, 2, 3, 5, 7, 9, 11],
+            'Dorian': [0, 2, 3, 5, 7, 9, 10],
+            'Phrygian': [0, 1, 3, 5, 7, 8, 10],
+            'Lydian': [0, 2, 4, 6, 7, 9, 11],
+            'Mixolydian': [0, 2, 4, 5, 7, 9, 10],
+            'Locrian': [0, 1, 3, 5, 6, 8, 10]
+        };
+
+        // Modal patterns (same intervals but organized for modal analysis)
+        const MODAL_PATTERNS = {
+            'Ionian': [0, 2, 4, 5, 7, 9, 11],
+            'Dorian': [0, 2, 3, 5, 7, 9, 10],
+            'Phrygian': [0, 1, 3, 5, 7, 8, 10],
+            'Lydian': [0, 2, 4, 6, 7, 9, 11],
+            'Mixolydian': [0, 2, 4, 5, 7, 9, 10],
+            'Aeolian': [0, 2, 3, 5, 7, 8, 10],
+            'Locrian': [0, 1, 3, 5, 6, 8, 10]
+        };
+
+        // Modal chord qualities (for diatonic chords in each mode)
+        const MODAL_CHORD_QUALITIES = {
+            'Ionian': ['major', 'minor', 'minor', 'major', 'major', 'minor', 'diminished'],
+            'Dorian': ['minor', 'minor', 'major', 'major', 'minor', 'diminished', 'major'],
+            'Phrygian': ['minor', 'major', 'major', 'minor', 'diminished', 'major', 'minor'],
+            'Lydian': ['major', 'major', 'minor', 'diminished', 'major', 'minor', 'minor'],
+            'Mixolydian': ['major', 'minor', 'diminished', 'major', 'minor', 'minor', 'major'],
+            'Aeolian': ['minor', 'diminished', 'major', 'minor', 'minor', 'major', 'major'],
+            'Locrian': ['diminished', 'major', 'minor', 'minor', 'major', 'major', 'minor']
+        };
+
+        // Modal functions
+        const MODAL_FUNCTIONS = {
+            'Ionian': ['Strong Tonic (Tonic)', 'Weak Subdominant (Supertonic)', 'Weak Tonic (Mediant)', 'Strong Subdominant (Subdominant)', 'Strong Dominant (Dominant)', 'Weak Tonic (Submediant)', 'Weak Dominant (Leading tone)'],
+            'Dorian': ['Modal Tonic (i)', 'Supertonic (ii)', 'Modal Subdominant (bIII)', 'Subdominant (IV)', 'Modal Dominant (v)', 'Modal Submediant (vi°)', 'Subtonic (bVII)'],
+            'Phrygian': ['Modal Tonic (i)', 'Neapolitan (bII)', 'Modal Mediant (bIII)', 'Modal Subdominant (iv)', 'Modal Dominant (v°)', 'Modal Submediant (bVI)', 'Subtonic (bvii)'],
+            'Lydian': ['Modal Tonic (I)', 'Supertonic (II)', 'Modal Mediant (iii)', 'Tritone Sub (iv°)', 'Modal Dominant (V)', 'Modal Submediant (vi)', 'Leading tone (vii)'],
+            'Mixolydian': ['Modal Tonic (I)', 'Supertonic (ii)', 'Modal Mediant (iii°)', 'Subdominant (IV)', 'Modal Dominant (v)', 'Modal Submediant (vi)', 'Subtonic (bVII)'],
+            'Aeolian': ['Modal Tonic (i)', 'Supertonic (ii°)', 'Modal Mediant (bIII)', 'Modal Subdominant (iv)', 'Modal Dominant (v)', 'Modal Submediant (bVI)', 'Subtonic (bVII)'],
+            'Locrian': ['Modal Tonic (i°)', 'Neapolitan (bII)', 'Modal Mediant (biii)', 'Modal Subdominant (iv)', 'Tritone (bV)', 'Modal Submediant (bVI)', 'Subtonic (bvii)']
+        };
+
+        // Chord intervals for triads
+        const TRIAD_PATTERNS = {
+            'major': [0, 4, 7],
+            'minor': [0, 3, 7],
+            'diminished': [0, 3, 6]
+        };
+
+        // 7th chord intervals
+        const SEVENTH_PATTERNS = {
+            'maj7': [0, 4, 7, 11],
+            'min7': [0, 3, 7, 10],
+            '7': [0, 4, 7, 10],
+            'min7b5': [0, 3, 6, 10],
+            'dim7': [0, 3, 6, 9]
+        };
+
+        // Diatonic chord qualities for major scale
+        const MAJOR_DIATONIC_TRIADS = ['major', 'minor', 'minor', 'major', 'major', 'minor', 'diminished'];
+        const MAJOR_DIATONIC_SEVENTHS = ['maj7', 'min7', 'min7', 'maj7', '7', 'min7', 'min7b5'];
+
+        // Roman numerals
+        const ROMAN_NUMERALS = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+        const SEVENTH_ROMAN_NUMERALS = ['Imaj7', 'ii7', 'iii7', 'IVmaj7', 'V7', 'vi7', 'vii7b5'];
+
+        // Chord functions
+        const CHORD_FUNCTIONS = ['Strong Tonic (Tonic)', 'Weak Subdominant (Supertonic)', 'Weak Tonic (Mediant)', 'Strong Subdominant (Subdominant)', 'Strong Dominant (Dominant)', 'Weak Tonic (Submediant)', 'Weak Dominant (Leading tone)'];
+
+        // Interval structures
+        const CHORD_INTERVALS = ['R, M3, P5', 'R, m3, P5', 'R, m3, P5', 'R, M3, P5', 'R, M3, P5', 'R, m3, P5', 'R, m3, b5'];
+
+        // 7th chord functions
+        const SEVENTH_FUNCTIONS = ['Strong Tonic (Tonic)', 'Weak Subdominant (Supertonic)', 'Weak Tonic (Mediant)', 'Strong Subdominant (Subdominant)', 'Strong Dominant (Dominant)', 'Weak Tonic (Submediant)', 'Weak Dominant (Leading tone)'];
+
+        // 7th chord intervals
+        const SEVENTH_INTERVALS = ['R, M3, P5, M7', 'R, m3, P5, m7', 'R, m3, P5, m7', 'R, M3, P5, M7', 'R, M3, P5, m7', 'R, m3, P5, m7', 'R, m3, b5, m7'];
+
+        /**
+         * Get note index in chromatic scale
+         */
+        function getNoteIndex(note) {
+            return NOTES.indexOf(note);
+        }
+
+        /**
+         * Get note at specified interval from root
+         */
+        function getNoteAtInterval(root, interval) {
+            const rootIndex = getNoteIndex(root);
+            return NOTES[(rootIndex + interval) % 12];
+        }
+
+        /**
+         * Generate scale notes
+         */
+        function generateScale(root, pattern) {
+            return pattern.map(interval => getNoteAtInterval(root, interval));
+        }
+
+        /**
+         * Generate chord notes
+         */
+        function generateChord(root, pattern) {
+            return pattern.map(interval => getNoteAtInterval(root, interval));
+        }
+
+        /**
+         * Get modal diatonic chords for a mode
+         */
+        function getModalChords(root, mode) {
+            const modalScale = generateScale(root, MODAL_PATTERNS[mode]);
+            const chordQualities = MODAL_CHORD_QUALITIES[mode];
+            const chords = [];
+
+            for (let i = 0; i < 7; i++) {
+                const chordRoot = modalScale[i];
+                const quality = chordQualities[i];
+                const pattern = TRIAD_PATTERNS[quality];
+                const notes = generateChord(chordRoot, pattern);
+
+                // Modal Roman numerals
+                const modalNumerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
+                const romanNumeral = quality === 'major' 
+                    ? modalNumerals[i].toUpperCase() 
+                    : quality === 'diminished' 
+                        ? modalNumerals[i] + '°' 
+                        : modalNumerals[i];
+
+                chords.push({
+                    roman: romanNumeral,
+                    name: getChordName(chordRoot, quality),
+                    notes: notes
+                });
+            }
+
+            return chords;
+        }
+
+        /**
+         * Get diatonic triads for a key
+         */
+        function getDiatonicTriads(key) {
+            const majorScale = generateScale(key, SCALE_PATTERNS['Major']);
+            const chords = [];
+
+            for (let i = 0; i < 7; i++) {
+                const root = majorScale[i];
+                const quality = MAJOR_DIATONIC_TRIADS[i];
+                const pattern = TRIAD_PATTERNS[quality];
+                const notes = generateChord(root, pattern);
+
+                chords.push({
+                    roman: ROMAN_NUMERALS[i],
+                    name: getChordName(root, quality),
+                    notes: notes
+                });
+            }
+
+            return chords;
+        }
+
+        /**
+         * Get diatonic 7th chords for a key
+         */
+        function getDiatonicSevenths(key) {
+            const majorScale = generateScale(key, SCALE_PATTERNS['Major']);
+            const chords = [];
+
+            for (let i = 0; i < 7; i++) {
+                const root = majorScale[i];
+                const quality = MAJOR_DIATONIC_SEVENTHS[i];
+                const pattern = SEVENTH_PATTERNS[quality];
+                const notes = generateChord(root, pattern);
+
+                chords.push({
+                    roman: SEVENTH_ROMAN_NUMERALS[i],
+                    name: getSeventhChordName(root, quality),
+                    notes: notes
+                });
+            }
+
+            return chords;
+        }
+
+        /**
+         * Generate chord name
+         */
+        function getChordName(root, quality) {
+            const enharmonicRoot = ENHARMONIC_NAMES[root] ? ENHARMONIC_NAMES[root].split(' / ')[0] : root;
+
+            switch (quality) {
+                case 'major':
+                    return enharmonicRoot;
+                case 'minor':
+                    return enharmonicRoot + 'm';
+                case 'diminished':
+                    return enharmonicRoot + '°';
+                default:
+                    return enharmonicRoot;
+            }
+        }
+
+        /**
+         * Generate 7th chord name
+         */
+        function getSeventhChordName(root, quality) {
+            const enharmonicRoot = ENHARMONIC_NAMES[root] ? ENHARMONIC_NAMES[root].split(' / ')[0] : root;
+
+            switch (quality) {
+                case 'maj7':
+                    return enharmonicRoot + 'maj7';
+                case 'min7':
+                    return enharmonicRoot + 'm7';
+                case '7':
+                    return enharmonicRoot + '7';
+                case 'min7b5':
+                    return enharmonicRoot + 'm7b5';
+                case 'dim7':
+                    return enharmonicRoot + '°7';
+                default:
+                    return enharmonicRoot + quality;
+            }
+        }
+
+        /**
+         * Update diatonic chord display as table
+         */
+        function updateDiatonicChordDisplay(chords, functions, intervals) {
+            const container = document.getElementById('diatonicChords');
+
+            const table = document.createElement('table');
+            table.className = 'diatonic-table';
+
+            // Create header
+            const thead = document.createElement('thead');
+            thead.innerHTML = `
+                <tr>
+                    <th>Roman Numeral</th>
+                    <th>Chord</th>
+                    <th>Notes</th>
+                    <th>Function</th>
+                    <th>Intervals</th>
+                </tr>
+            `;
+            table.appendChild(thead);
+
+            // Create body
+            const tbody = document.createElement('tbody');
+            chords.forEach((chord, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="roman-numeral">${chord.roman}</td>
+                    <td class="chord-name-cell">${chord.name}</td>
+                    <td>${chord.notes.join(' - ')}</td>
+                    <td class="function-cell">${functions[index]}</td>
+                    <td class="interval-cell">${intervals[index]}</td>
+                `;
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+
+            container.innerHTML = '';
+            container.appendChild(table);
+        }
+
+        /**
+         * Update diatonic 7th chord display as table
+         */
+        function updateDiatonicSeventhDisplay(chords, functions, intervals) {
+            const container = document.getElementById('seventhChords');
+
+            const table = document.createElement('table');
+            table.className = 'diatonic-table';
+
+            // Create header
+            const thead = document.createElement('thead');
+            thead.innerHTML = `
+                <tr>
+                    <th>Roman Numeral</th>
+                    <th>Chord</th>
+                    <th>Notes</th>
+                    <th>Function</th>
+                    <th>Intervals</th>
+                </tr>
+            `;
+            table.appendChild(thead);
+
+            // Create body
+            const tbody = document.createElement('tbody');
+            chords.forEach((chord, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="roman-numeral">${chord.roman}</td>
+                    <td class="chord-name-cell">${chord.name}</td>
+                    <td>${chord.notes.join(' - ')}</td>
+                    <td class="function-cell">${functions[index]}</td>
+                    <td class="interval-cell">${intervals[index]}</td>
+                `;
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+
+            container.innerHTML = '';
+            container.appendChild(table);
+        }
+
+        /**
+         * Update scale display
+         */
+        function updateScaleDisplay(key) {
+            const container = document.getElementById('scales');
+            container.innerHTML = '';
+
+            Object.entries(SCALE_PATTERNS).forEach(([scaleName, pattern]) => {
+                const notes = generateScale(key, pattern);
+
+                const scaleDiv = document.createElement('div');
+                scaleDiv.className = 'scale-item';
+
+                const keyDisplay = ENHARMONIC_NAMES[key] ? ENHARMONIC_NAMES[key].split(' / ')[0] : key;
+
+                scaleDiv.innerHTML = `
+                    <div class="scale-name">${keyDisplay} ${scaleName}</div>
+                    <div class="scale-notes">${notes.join(' - ')}</div>
+                `;
+
+                container.appendChild(scaleDiv);
+            });
+        }
+
+        /**
+         * Update all displays for selected key/mode
+         */
+        function updateDisplay() {
+            const selectedKey = document.getElementById('keySelect').value;
+            const selectedMode = document.getElementById('modeSelect').value;
+
+            if (selectedMode === 'Ionian') {
+                // Major key analysis
+                const triads = getDiatonicTriads(selectedKey);
+                updateDiatonicChordDisplay(triads, CHORD_FUNCTIONS, CHORD_INTERVALS);
+
+                const sevenths = getDiatonicSevenths(selectedKey);
+                updateDiatonicSeventhDisplay(sevenths, SEVENTH_FUNCTIONS, SEVENTH_INTERVALS);
+
+                // Update section titles
+                document.querySelector('#diatonicChords').parentElement.querySelector('h3').textContent = 'Diatonic Triads';
+                document.querySelector('#seventhChords').parentElement.querySelector('h3').textContent = 'Diatonic 7th Chords';
+            } else {
+                // Modal analysis
+                const modalTriads = getModalChords(selectedKey, selectedMode);
+                const modalFunctions = MODAL_FUNCTIONS[selectedMode];
+                updateDiatonicChordDisplay(modalTriads, modalFunctions, CHORD_INTERVALS);
+
+                // For now, hide 7th chords in modal analysis
+                document.getElementById('seventhChords').innerHTML = '<p>7th chord analysis for modes coming soon...</p>';
+
+                // Update section titles
+                const enharmonicKey = ENHARMONIC_NAMES[selectedKey] ? ENHARMONIC_NAMES[selectedKey].split(' / ')[0] : selectedKey;
+                document.querySelector('#diatonicChords').parentElement.querySelector('h3').textContent = `${enharmonicKey} ${selectedMode} - Modal Triads`;
+                document.querySelector('#seventhChords').parentElement.querySelector('h3').textContent = 'Modal 7th Chords';
+            }
+
+            // Update scales (works for both major and modal)
+            updateScaleDisplay(selectedKey);
+        }
+
+
+
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listeners
+            document.getElementById('keySelect').addEventListener('change', updateDisplay);
+            document.getElementById('modeSelect').addEventListener('change', updateDisplay);
+
+            // Initial display with C Ionian (major)
+            updateDisplay();
+        });
+    </script>
+</body>
+
+</html>
