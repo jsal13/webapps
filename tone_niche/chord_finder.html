@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chord Notes & Scale Finder</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .note {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .quick-chords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            justify-content: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .quick-chord {
+            background: #e9ecef;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 14px;
+        }
+
+        .quick-chord:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        #note-wheel-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        #note-wheel {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .mode-segment {
+            stroke: white;
+            stroke-width: 1.5;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            opacity: 0.85;
+        }
+
+        .mode-segment:hover {
+            opacity: 1;
+            stroke-width: 3;
+            stroke: #fbbf24;
+        }
+
+        .note-label {
+            font-size: 16px;
+            font-weight: 700;
+            fill: #333;
+            text-anchor: middle;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .mode-label {
+            font-size: 10px;
+            font-weight: 600;
+            fill: #4b5563;
+            text-anchor: middle;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .wheel-center-text {
+            font-size: 16px;
+            font-weight: 700;
+            fill: #764ba2;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .wheel-info-text {
+            font-size: 12px;
+            font-weight: 600;
+            fill: #667eea;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .chord-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 0 0 auto;
+        }
+
+        .control-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .control-group input[type="text"] {
+            width: 250px;
+        }
+
+        #chord-notes-display {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        #chord-notes-display .chord-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #764ba2;
+            margin-bottom: 10px;
+        }
+
+        #chord-notes-display .chord-notes {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        #chord-notes-display .note {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        #mode-tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        #mode-tooltip.visible {
+            opacity: 1;
+        }
+
+        #mode-tooltip .tooltip-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #10b981;
+        }
+
+        #mode-tooltip .tooltip-notes {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        #mode-tooltip .tooltip-note {
+            background: rgba(16, 185, 129, 0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        #mode-tooltip .tooltip-note.chord-note {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎵 Chord Notes & Scale Finder</h1>
+        <p class="subtitle">Find notes in any chord and discover which scales contain them</p>
+
+        <div id="mode-tooltip">
+            <div class="tooltip-title"></div>
+            <div class="tooltip-notes"></div>
+        </div>
+
+        <div class="section">
+            <h2>Chromatic Wheel</h2>
+
+            <div class="chord-controls">
+                <div class="control-group">
+                    <label for="wheel-chord-input">Enter Chord Symbol</label>
+                    <input type="text" id="wheel-chord-input" placeholder="e.g. C, Dm7, G7, Fmaj7" value="C">
+                </div>
+                <button onclick="updateChordSelection()">Analyze Chord</button>
+            </div>
+
+            <div class="quick-chords">
+                Quick examples:
+                <span class="quick-chord" onclick="setWheelChord('C')">C</span>
+                <span class="quick-chord" onclick="setWheelChord('Dm7')">Dm7</span>
+                <span class="quick-chord" onclick="setWheelChord('G7')">G7</span>
+                <span class="quick-chord" onclick="setWheelChord('Fmaj7')">Fmaj7</span>
+                <span class="quick-chord" onclick="setWheelChord('Am7b5')">Am7b5</span>
+                <span class="quick-chord" onclick="setWheelChord('C7#9')">C7#9</span>
+                <span class="quick-chord" onclick="setWheelChord('C/E')">C/E</span>
+            </div>
+
+            <div id="chord-notes-display">
+                <div class="chord-name">C</div>
+                <div class="chord-notes">
+                    <span class="note">C</span>
+                    <span class="note">E</span>
+                    <span class="note">G</span>
+                </div>
+            </div>
+
+            <div id="note-wheel-container">
+                <svg id="note-wheel" width="750" height="700"></svg>
+            </div>
+        </div>
+    </div>
+
+    <script src="chord_notes.js"></script>
+    <script>
+        // Load data on page load
+        let dataLoaded = false;
+
+        async function initialize() {
+            try {
+                await loadNotesData();
+                dataLoaded = true;
+                console.log('Chord data loaded successfully');
+            } catch (error) {
+                console.error('Error loading data:', error);
+                alert('Error loading chord data. Please refresh the page.');
+            }
+        }
+
+        function updateChordSelection() {
+            if (!dataLoaded) return;
+
+            const chordInput = document.getElementById('wheel-chord-input').value.trim();
+
+            if (!chordInput) {
+                console.log('No chord entered');
+                return;
+            }
+
+            try {
+                const notes = getChordNotes(chordInput);
+                currentChordNotes = notes; // Store for tooltip highlighting
+                console.log(`Selected chord: ${chordInput}`, notes);
+
+                // Update the chord notes display
+                const displayDiv = document.getElementById('chord-notes-display');
+                const chordNameDiv = displayDiv.querySelector('.chord-name');
+                const chordNotesDiv = displayDiv.querySelector('.chord-notes');
+
+                chordNameDiv.textContent = chordInput;
+                chordNotesDiv.innerHTML = notes.map(note =>
+                    `<span class="note">${note}</span>`
+                ).join('');
+
+                // Highlight scales on the wheel
+                highlightScales(chordInput);
+            } catch (error) {
+                console.error('Error getting chord notes:', error);
+
+                // Show error in the display
+                const displayDiv = document.getElementById('chord-notes-display');
+                const chordNameDiv = displayDiv.querySelector('.chord-name');
+                const chordNotesDiv = displayDiv.querySelector('.chord-notes');
+
+                chordNameDiv.textContent = 'Invalid Chord';
+                chordNotesDiv.innerHTML = `<span style="color: #e53e3e; padding: 8px;">${error.message}</span>`;
+            }
+        }
+
+        function setWheelChord(chord) {
+            document.getElementById('wheel-chord-input').value = chord;
+            updateChordSelection();
+        }
+
+        // Handle Enter key
+        document.getElementById('wheel-chord-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') updateChordSelection();
+        });
+
+        // Initialize on load
+        initialize();
+
+        // Store segment references for highlighting
+        const segmentMap = {};
+        const defaultColor = '#d1d5db';
+        const highlightColor = '#10b981'; // Green for all highlighted modes
+        let currentChordNotes = ['C', 'E', 'G']; // Store current chord notes for tooltip highlighting
+
+        // Create the chromatic note wheel with mode rings
+        function createNoteWheel() {
+            const notes = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B'];
+            const modes = ['Ionian', 'Dorian', 'Phrygian', 'Lydian', 'Mixolydian', 'Aeolian', 'Locrian'];
+
+            // Neutral light gray for all modes
+            const modeColors = [
+                '#d1d5db', // Light gray
+                '#d1d5db', // Light gray
+                '#d1d5db', // Light gray
+                '#d1d5db', // Light gray
+                '#d1d5db', // Light gray
+                '#d1d5db', // Light gray
+                '#d1d5db'  // Light gray
+            ];
+
+            const svg = d3.select('#note-wheel');
+            const width = 750;
+            const height = 700;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const outerRadius = 260;
+            const innerRadius = 80;
+            const ringWidth = (outerRadius - innerRadius) / modes.length;
+
+            // Create a group for the wheel
+            const g = svg.append('g')
+                .attr('transform', `translate(${centerX}, ${centerY})`);
+
+            // Create the pie layout
+            const pie = d3.pie()
+                .value(1)
+                .sort(null)
+                .startAngle(-Math.PI / 2); // Start at top (12 o'clock)
+
+            const pieData = pie(notes);
+
+            // Create segments for each mode ring
+            modes.forEach((mode, modeIndex) => {
+                const ringInnerRadius = innerRadius + (modeIndex * ringWidth);
+                const ringOuterRadius = innerRadius + ((modeIndex + 1) * ringWidth);
+
+                // Create the arc generator for this ring
+                const arc = d3.arc()
+                    .innerRadius(ringInnerRadius)
+                    .outerRadius(ringOuterRadius);
+
+                // Create hover arc (slightly larger)
+                const hoverArc = d3.arc()
+                    .innerRadius(ringInnerRadius - 2)
+                    .outerRadius(ringOuterRadius + 2);
+
+                // Create segments for this mode
+                const segments = g.selectAll(`.mode-${modeIndex}-segment`)
+                    .data(pieData)
+                    .enter()
+                    .append('g')
+                    .attr('class', `segment-group mode-${modeIndex}`);
+
+                // Add the path for each segment
+                segments.append('path')
+                    .attr('class', 'mode-segment')
+                    .attr('d', arc)
+                    .style('fill', modeColors[modeIndex])
+                    .attr('data-note', d => d.data)
+                    .attr('data-mode', mode)
+                    .each(function (d) {
+                        // Store reference to this segment
+                        const key = `${d.data}:${mode}`;
+                        segmentMap[key] = {
+                            element: this,
+                            arc: arc,
+                            hoverArc: hoverArc,
+                            defaultColor: modeColors[modeIndex],
+                            currentColor: modeColors[modeIndex]
+                        };
+                    })
+                    .on('mouseenter', function (event, d) {
+                        const key = `${d.data}:${mode}`;
+                        const segment = segmentMap[key];
+
+                        d3.select(this)
+                            .transition()
+                            .duration(150)
+                            .attr('d', hoverArc)
+                            .style('fill', '#fbbf24'); // Gold on hover
+
+                        // Update center text
+                        centerText.text(d.data);
+                        infoText.text(mode);
+
+                        // Show tooltip with scale notes
+                        showModeTooltip(event, d.data, mode);
+                    })
+                    .on('mouseleave', function (event, d) {
+                        const key = `${d.data}:${mode}`;
+                        const segment = segmentMap[key];
+
+                        d3.select(this)
+                            .transition()
+                            .duration(150)
+                            .attr('d', arc)
+                            .style('fill', segment.currentColor);
+
+                        // Reset center text
+                        centerText.text('');
+                        infoText.text('Hover over a segment');
+
+                        // Hide tooltip
+                        hideModeTooltip();
+                    })
+                    .on('mousemove', function (event) {
+                        // Update tooltip position as mouse moves
+                        updateTooltipPosition(event);
+                    });
+
+                // Add mode labels on each segment
+                segments.append('text')
+                    .attr('class', 'mode-label')
+                    .attr('transform', d => {
+                        const [x, y] = arc.centroid(d);
+                        const angle = (d.startAngle + d.endAngle) / 2 * 180 / Math.PI;
+                        // Rotate text tangentially (perpendicular to radial), flip if on left side
+                        const rotation = angle > 90 && angle < 270 ? angle + 180 : angle;
+                        return `translate(${x}, ${y}) rotate(${rotation})`;
+                    })
+                    .attr('dy', '0.35em')
+                    .text(mode);
+            });
+
+            // Add note labels outside the wheel
+            pieData.forEach((d, i) => {
+                const angle = (d.startAngle + d.endAngle) / 2;
+                const labelRadius = outerRadius + 30;
+                const x = Math.cos(angle) * labelRadius;
+                const y = Math.sin(angle) * labelRadius;
+
+                g.append('text')
+                    .attr('class', 'note-label')
+                    .attr('x', x)
+                    .attr('y', y)
+                    .attr('dy', '0.35em')
+                    .text(d.data);
+            });
+
+            // Add center text
+            const centerText = g.append('text')
+                .attr('class', 'wheel-center-text')
+                .attr('y', -5);
+
+            const infoText = g.append('text')
+                .attr('class', 'wheel-info-text')
+                .attr('y', 15)
+                .text('Hover over a segment');
+        }
+
+        // Create the wheel after a short delay to ensure SVG is ready
+        setTimeout(createNoteWheel, 100);
+
+        // Highlight default chord after wheel is created and data is loaded
+        setTimeout(() => {
+            if (dataLoaded) {
+                updateChordSelection();
+            }
+        }, 200);
+
+        // Function to highlight scales that contain the chord
+        function highlightScales(chordSymbol) {
+            // Reset all segments to default color
+            for (const key in segmentMap) {
+                const segment = segmentMap[key];
+                segment.currentColor = segment.defaultColor;
+                d3.select(segment.element)
+                    .transition()
+                    .duration(300)
+                    .style('fill', segment.defaultColor);
+            }
+
+            if (!chordSymbol) return;
+
+            try {
+                // Find scales that contain this chord
+                const scales = findScalesForChord(chordSymbol);
+
+                // Normalize note names to match display format
+                function normalizeNoteDisplay(note) {
+                    const noteMap = {
+                        'C': 'C',
+                        'C#': 'C#/Db', 'Db': 'C#/Db',
+                        'D': 'D',
+                        'D#': 'D#/Eb', 'Eb': 'D#/Eb',
+                        'E': 'E',
+                        'F': 'F',
+                        'F#': 'F#/Gb', 'Gb': 'F#/Gb',
+                        'G': 'G',
+                        'G#': 'G#/Ab', 'Ab': 'G#/Ab',
+                        'A': 'A',
+                        'A#': 'A#/Bb', 'Bb': 'A#/Bb',
+                        'B': 'B'
+                    };
+                    return noteMap[note] || note;
+                }
+
+                // Highlight matching segments
+                scales.forEach(scale => {
+                    const displayNote = normalizeNoteDisplay(scale.root);
+                    const displayMode = scale.mode.charAt(0).toUpperCase() + scale.mode.slice(1);
+                    const key = `${displayNote}:${displayMode}`;
+
+                    if (segmentMap[key]) {
+                        const segment = segmentMap[key];
+                        segment.currentColor = highlightColor;
+                        d3.select(segment.element)
+                            .transition()
+                            .duration(300)
+                            .style('fill', highlightColor);
+                    }
+                });
+
+                console.log(`Highlighted ${scales.length} scales for ${chordSymbol}`);
+            } catch (error) {
+                console.error('Error highlighting scales:', error);
+            }
+        }
+
+        // Tooltip functions
+        function showModeTooltip(event, noteDisplay, mode) {
+            const tooltip = document.getElementById('mode-tooltip');
+            const titleDiv = tooltip.querySelector('.tooltip-title');
+            const notesDiv = tooltip.querySelector('.tooltip-notes');
+
+            // Convert display note format to single note for lookup
+            const noteMap = {
+                'C': 'C',
+                'C#/Db': 'C#',
+                'D': 'D',
+                'D#/Eb': 'D#',
+                'E': 'E',
+                'F': 'F',
+                'F#/Gb': 'F#',
+                'G': 'G',
+                'G#/Ab': 'G#',
+                'A': 'A',
+                'A#/Bb': 'A#',
+                'B': 'B'
+            };
+
+            const rootNote = noteMap[noteDisplay];
+            const modeLower = mode.toLowerCase();
+
+            try {
+                // Get the scale notes for this root and mode
+                const scaleNotes = getScaleNotes(rootNote, modeLower);
+
+                if (scaleNotes) {
+                    titleDiv.textContent = `${rootNote} ${mode}`;
+
+                    // Normalize current chord notes for comparison
+                    const normalizedChordNotes = new Set(
+                        currentChordNotes.map(note => normalizeNote(note))
+                    );
+
+                    // Create note elements with chord note highlighting
+                    notesDiv.innerHTML = scaleNotes.map(note => {
+                        const normalizedNote = normalizeNote(note);
+                        const isChordNote = normalizedChordNotes.has(normalizedNote);
+                        const className = isChordNote ? 'tooltip-note chord-note' : 'tooltip-note';
+                        return `<span class="${className}">${note}</span>`;
+                    }).join('');
+
+                    tooltip.classList.add('visible');
+                    updateTooltipPosition(event);
+                }
+            } catch (error) {
+                console.error('Error showing tooltip:', error);
+            }
+        }
+
+        function hideModeTooltip() {
+            const tooltip = document.getElementById('mode-tooltip');
+            tooltip.classList.remove('visible');
+        }
+
+        function updateTooltipPosition(event) {
+            const tooltip = document.getElementById('mode-tooltip');
+            const offsetX = 15;
+            const offsetY = 15;
+
+            tooltip.style.left = (event.pageX + offsetX) + 'px';
+            tooltip.style.top = (event.pageY + offsetY) + 'px';
+        }
+    </script>
+</body>
+
+</html>

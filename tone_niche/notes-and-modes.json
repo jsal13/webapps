@@ -1,0 +1,208 @@
+{
+  "notes": [
+    {
+      "root": "C",
+      "modes": {
+        "ionian": ["C", "D", "E", "F", "G", "A", "B"],
+        "dorian": ["C", "D", "Eb", "F", "G", "A", "Bb"],
+        "phrygian": ["C", "Db", "Eb", "F", "G", "Ab", "Bb"],
+        "lydian": ["C", "D", "E", "F#", "G", "A", "B"],
+        "mixolydian": ["C", "D", "E", "F", "G", "A", "Bb"],
+        "aeolian": ["C", "D", "Eb", "F", "G", "Ab", "Bb"],
+        "locrian": ["C", "Db", "Eb", "F", "Gb", "Ab", "Bb"]
+      }
+    },
+    {
+      "root": "C#",
+      "modes": {
+        "ionian": ["C#", "D#", "E#", "F#", "G#", "A#", "B#"],
+        "dorian": ["C#", "D#", "E", "F#", "G#", "A#", "B"],
+        "phrygian": ["C#", "D", "E", "F#", "G#", "A", "B"],
+        "lydian": ["C#", "D#", "E#", "F##", "G#", "A#", "B#"],
+        "mixolydian": ["C#", "D#", "E#", "F#", "G#", "A#", "B"],
+        "aeolian": ["C#", "D#", "E", "F#", "G#", "A", "B"],
+        "locrian": ["C#", "D", "E", "F#", "G", "A", "B"]
+      }
+    },
+    {
+      "root": "Db",
+      "modes": {
+        "ionian": ["Db", "Eb", "F", "Gb", "Ab", "Bb", "C"],
+        "dorian": ["Db", "Eb", "Fb", "Gb", "Ab", "Bb", "Cb"],
+        "phrygian": ["Db", "Ebb", "Fb", "Gb", "Ab", "Bbb", "Cb"],
+        "lydian": ["Db", "Eb", "F", "G", "Ab", "Bb", "C"],
+        "mixolydian": ["Db", "Eb", "F", "Gb", "Ab", "Bb", "Cb"],
+        "aeolian": ["Db", "Eb", "Fb", "Gb", "Ab", "Bbb", "Cb"],
+        "locrian": ["Db", "Ebb", "Fb", "Gb", "Abb", "Bbb", "Cb"]
+      }
+    },
+    {
+      "root": "D",
+      "modes": {
+        "ionian": ["D", "E", "F#", "G", "A", "B", "C#"],
+        "dorian": ["D", "E", "F", "G", "A", "B", "C"],
+        "phrygian": ["D", "Eb", "F", "G", "A", "Bb", "C"],
+        "lydian": ["D", "E", "F#", "G#", "A", "B", "C#"],
+        "mixolydian": ["D", "E", "F#", "G", "A", "B", "C"],
+        "aeolian": ["D", "E", "F", "G", "A", "Bb", "C"],
+        "locrian": ["D", "Eb", "F", "G", "Ab", "Bb", "C"]
+      }
+    },
+    {
+      "root": "D#",
+      "modes": {
+        "ionian": ["D#", "E#", "F##", "G#", "A#", "B#", "C##"],
+        "dorian": ["D#", "E#", "F#", "G#", "A#", "B#", "C#"],
+        "phrygian": ["D#", "E", "F#", "G#", "A#", "B", "C#"],
+        "lydian": ["D#", "E#", "F##", "G##", "A#", "B#", "C##"],
+        "mixolydian": ["D#", "E#", "F##", "G#", "A#", "B#", "C#"],
+        "aeolian": ["D#", "E#", "F#", "G#", "A#", "B", "C#"],
+        "locrian": ["D#", "E", "F#", "G#", "A", "B", "C#"]
+      }
+    },
+    {
+      "root": "Eb",
+      "modes": {
+        "ionian": ["Eb", "F", "G", "Ab", "Bb", "C", "D"],
+        "dorian": ["Eb", "F", "Gb", "Ab", "Bb", "C", "Db"],
+        "phrygian": ["Eb", "Fb", "Gb", "Ab", "Bb", "Cb", "Db"],
+        "lydian": ["Eb", "F", "G", "A", "Bb", "C", "D"],
+        "mixolydian": ["Eb", "F", "G", "Ab", "Bb", "C", "Db"],
+        "aeolian": ["Eb", "F", "Gb", "Ab", "Bb", "Cb", "Db"],
+        "locrian": ["Eb", "Fb", "Gb", "Ab", "Bbb", "Cb", "Db"]
+      }
+    },
+    {
+      "root": "E",
+      "modes": {
+        "ionian": ["E", "F#", "G#", "A", "B", "C#", "D#"],
+        "dorian": ["E", "F#", "G", "A", "B", "C#", "D"],
+        "phrygian": ["E", "F", "G", "A", "B", "C", "D"],
+        "lydian": ["E", "F#", "G#", "A#", "B", "C#", "D#"],
+        "mixolydian": ["E", "F#", "G#", "A", "B", "C#", "D"],
+        "aeolian": ["E", "F#", "G", "A", "B", "C", "D"],
+        "locrian": ["E", "F", "G", "A", "Bb", "C", "D"]
+      }
+    },
+    {
+      "root": "F",
+      "modes": {
+        "ionian": ["F", "G", "A", "Bb", "C", "D", "E"],
+        "dorian": ["F", "G", "Ab", "Bb", "C", "D", "Eb"],
+        "phrygian": ["F", "Gb", "Ab", "Bb", "C", "Db", "Eb"],
+        "lydian": ["F", "G", "A", "B", "C", "D", "E"],
+        "mixolydian": ["F", "G", "A", "Bb", "C", "D", "Eb"],
+        "aeolian": ["F", "G", "Ab", "Bb", "C", "Db", "Eb"],
+        "locrian": ["F", "Gb", "Ab", "Bb", "Cb", "Db", "Eb"]
+      }
+    },
+    {
+      "root": "F#",
+      "modes": {
+        "ionian": ["F#", "G#", "A#", "B", "C#", "D#", "E#"],
+        "dorian": ["F#", "G#", "A", "B", "C#", "D#", "E"],
+        "phrygian": ["F#", "G", "A", "B", "C#", "D", "E"],
+        "lydian": ["F#", "G#", "A#", "B#", "C#", "D#", "E#"],
+        "mixolydian": ["F#", "G#", "A#", "B", "C#", "D#", "E"],
+        "aeolian": ["F#", "G#", "A", "B", "C#", "D", "E"],
+        "locrian": ["F#", "G", "A", "B", "C", "D", "E"]
+      }
+    },
+    {
+      "root": "Gb",
+      "modes": {
+        "ionian": ["Gb", "Ab", "Bb", "Cb", "Db", "Eb", "F"],
+        "dorian": ["Gb", "Ab", "Bbb", "Cb", "Db", "Eb", "Fb"],
+        "phrygian": ["Gb", "Abb", "Bbb", "Cb", "Db", "Ebb", "Fb"],
+        "lydian": ["Gb", "Ab", "Bb", "C", "Db", "Eb", "F"],
+        "mixolydian": ["Gb", "Ab", "Bb", "Cb", "Db", "Eb", "Fb"],
+        "aeolian": ["Gb", "Ab", "Bbb", "Cb", "Db", "Ebb", "Fb"],
+        "locrian": ["Gb", "Abb", "Bbb", "Cb", "Dbb", "Ebb", "Fb"]
+      }
+    },
+    {
+      "root": "G",
+      "modes": {
+        "ionian": ["G", "A", "B", "C", "D", "E", "F#"],
+        "dorian": ["G", "A", "Bb", "C", "D", "E", "F"],
+        "phrygian": ["G", "Ab", "Bb", "C", "D", "Eb", "F"],
+        "lydian": ["G", "A", "B", "C#", "D", "E", "F#"],
+        "mixolydian": ["G", "A", "B", "C", "D", "E", "F"],
+        "aeolian": ["G", "A", "Bb", "C", "D", "Eb", "F"],
+        "locrian": ["G", "Ab", "Bb", "C", "Db", "Eb", "F"]
+      }
+    },
+    {
+      "root": "G#",
+      "modes": {
+        "ionian": ["G#", "A#", "B#", "C#", "D#", "E#", "F##"],
+        "dorian": ["G#", "A#", "B", "C#", "D#", "E#", "F#"],
+        "phrygian": ["G#", "A", "B", "C#", "D#", "E", "F#"],
+        "lydian": ["G#", "A#", "B#", "C##", "D#", "E#", "F##"],
+        "mixolydian": ["G#", "A#", "B#", "C#", "D#", "E#", "F#"],
+        "aeolian": ["G#", "A#", "B", "C#", "D#", "E", "F#"],
+        "locrian": ["G#", "A", "B", "C#", "D", "E", "F#"]
+      }
+    },
+    {
+      "root": "Ab",
+      "modes": {
+        "ionian": ["Ab", "Bb", "C", "Db", "Eb", "F", "G"],
+        "dorian": ["Ab", "Bb", "Cb", "Db", "Eb", "F", "Gb"],
+        "phrygian": ["Ab", "Bbb", "Cb", "Db", "Eb", "Fb", "Gb"],
+        "lydian": ["Ab", "Bb", "C", "D", "Eb", "F", "G"],
+        "mixolydian": ["Ab", "Bb", "C", "Db", "Eb", "F", "Gb"],
+        "aeolian": ["Ab", "Bb", "Cb", "Db", "Eb", "Fb", "Gb"],
+        "locrian": ["Ab", "Bbb", "Cb", "Db", "Ebb", "Fb", "Gb"]
+      }
+    },
+    {
+      "root": "A",
+      "modes": {
+        "ionian": ["A", "B", "C#", "D", "E", "F#", "G#"],
+        "dorian": ["A", "B", "C", "D", "E", "F#", "G"],
+        "phrygian": ["A", "Bb", "C", "D", "E", "F", "G"],
+        "lydian": ["A", "B", "C#", "D#", "E", "F#", "G#"],
+        "mixolydian": ["A", "B", "C#", "D", "E", "F#", "G"],
+        "aeolian": ["A", "B", "C", "D", "E", "F", "G"],
+        "locrian": ["A", "Bb", "C", "D", "Eb", "F", "G"]
+      }
+    },
+    {
+      "root": "A#",
+      "modes": {
+        "ionian": ["A#", "B#", "C##", "D#", "E#", "F##", "G##"],
+        "dorian": ["A#", "B#", "C#", "D#", "E#", "F##", "G#"],
+        "phrygian": ["A#", "B", "C#", "D#", "E#", "F#", "G#"],
+        "lydian": ["A#", "B#", "C##", "D##", "E#", "F##", "G##"],
+        "mixolydian": ["A#", "B#", "C##", "D#", "E#", "F##", "G#"],
+        "aeolian": ["A#", "B#", "C#", "D#", "E#", "F#", "G#"],
+        "locrian": ["A#", "B", "C#", "D#", "E", "F#", "G#"]
+      }
+    },
+    {
+      "root": "Bb",
+      "modes": {
+        "ionian": ["Bb", "C", "D", "Eb", "F", "G", "A"],
+        "dorian": ["Bb", "C", "Db", "Eb", "F", "G", "Ab"],
+        "phrygian": ["Bb", "Cb", "Db", "Eb", "F", "Gb", "Ab"],
+        "lydian": ["Bb", "C", "D", "E", "F", "G", "A"],
+        "mixolydian": ["Bb", "C", "D", "Eb", "F", "G", "Ab"],
+        "aeolian": ["Bb", "C", "Db", "Eb", "F", "Gb", "Ab"],
+        "locrian": ["Bb", "Cb", "Db", "Eb", "Fb", "Gb", "Ab"]
+      }
+    },
+    {
+      "root": "B",
+      "modes": {
+        "ionian": ["B", "C#", "D#", "E", "F#", "G#", "A#"],
+        "dorian": ["B", "C#", "D", "E", "F#", "G#", "A"],
+        "phrygian": ["B", "C", "D", "E", "F#", "G", "A"],
+        "lydian": ["B", "C#", "D#", "E#", "F#", "G#", "A#"],
+        "mixolydian": ["B", "C#", "D#", "E", "F#", "G#", "A"],
+        "aeolian": ["B", "C#", "D", "E", "F#", "G", "A"],
+        "locrian": ["B", "C", "D", "E", "F", "G", "A"]
+      }
+    }
+  ]
+}
