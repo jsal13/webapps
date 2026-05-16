@@ -15,7 +15,7 @@
   
   /* Typography */
   --font-serif: 'Lora', serif;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
   
   /* Spacing */
   --space-xs: 0.5rem;
@@ -124,7 +124,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: min(2vw, 0.9rem);
+  font-size: min(1.6vw, 0.75rem);
   font-weight: 600;
   color: white;
   text-align: center;
@@ -209,7 +209,7 @@ main {
 
   .bingo-cell {
     padding: var(--space-xs);
-    font-size: 0.85rem;
+    font-size: 0.7rem;
   }
   
   .bingo-board {
@@ -223,6 +223,6 @@ main {
   }
 
   .bingo-cell {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
   }
 }
