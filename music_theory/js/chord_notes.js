@@ -8,23 +8,24 @@ let notesData = null;
 
 async function loadNotesData() {
     if (notesData) return notesData;
-    
+
     // For Node.js
     if (typeof require !== 'undefined') {
         const fs = require('fs');
         const path = require('path');
-        const dataPath = path.join(__dirname, 'notes-and-modes.json');
+        const dataPath = path.join(__dirname, 'data', 'notes-and-modes.json');
         notesData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
         return notesData;
     }
-    
+
     // For browser
     if (typeof fetch !== 'undefined') {
-        const response = await fetch('notes-and-modes.json');
+        const dataPath = './data/notes-and-modes.json';
+        const response = await fetch(dataPath);
         notesData = await response.json();
         return notesData;
     }
-    
+
     throw new Error('Unable to load notes data');
 }
 
@@ -53,10 +54,10 @@ function getChromaticScale(root) {
     const chromatic = root.includes('#')
         ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
         : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-    
+
     // Find the starting position
     const startIdx = chromatic.indexOf(root);
-    
+
     // Rotate the array to start from root
     return [...chromatic.slice(startIdx), ...chromatic.slice(0, startIdx)];
 }
@@ -79,19 +80,19 @@ function parseChord(chordSymbol) {
         chordSymbol = parts[0];
         bassNote = parts[1];
     }
-    
+
     // Match root note (with optional sharp/flat)
     const rootMatch = chordSymbol.match(/^([A-G][#b]?)/);
     if (!rootMatch) {
         throw new Error(`Invalid chord symbol: ${chordSymbol}`);
     }
-    
+
     const root = rootMatch[1];
     const quality = chordSymbol.slice(root.length).trim();
     const qualityLower = quality.toLowerCase();
-    
+
     let chordType;
-    
+
     // Map quality strings to chord types (order matters - check longer patterns first)
     // Check case-sensitive patterns first
     if (['M7', 'M9', 'M11', 'M13'].includes(quality)) {
@@ -178,7 +179,7 @@ function parseChord(chordSymbol) {
     } else {
         throw new Error(`Unknown chord quality: ${quality}`);
     }
-    
+
     return { root, chordType, bassNote };
 }
 
@@ -193,16 +194,16 @@ function getChordIntervals(chordType) {
         'dim': [0, 3, 6],
         'aug': [0, 4, 8],
         '5': [0, 7],
-        
+
         // Suspended chords
         'sus4': [0, 5, 7],
         'sus2': [0, 2, 7],
-        
+
         // Sixth chords
         '6': [0, 4, 7, 9],
         'm6': [0, 3, 7, 9],
         '6/9': [0, 4, 7, 9, 14],
-        
+
         // Seventh chords
         'dom7': [0, 4, 7, 10],
         'maj7': [0, 4, 7, 11],
@@ -213,7 +214,7 @@ function getChordIntervals(chordType) {
         'augmaj7': [0, 4, 8, 11],
         'maj7#5': [0, 4, 8, 11],
         '7sus4': [0, 5, 7, 10],
-        
+
         // Altered dominant seventh chords
         '7#5': [0, 4, 8, 10],
         '7b5': [0, 4, 6, 10],
@@ -222,27 +223,27 @@ function getChordIntervals(chordType) {
         '7#11': [0, 4, 7, 10, 18],
         '7b13': [0, 4, 7, 10, 20],
         '7alt': [0, 4, 10, 13, 15, 18, 20],
-        
+
         // Ninth chords
         '9': [0, 4, 7, 10, 14],
         'm9': [0, 3, 7, 10, 14],
         'maj9': [0, 4, 7, 11, 14],
         'add9': [0, 4, 7, 14],
         'madd9': [0, 3, 7, 14],
-        
+
         // Eleventh chords
         '11': [0, 4, 7, 10, 14, 17],
         'm11': [0, 3, 7, 10, 14, 17],
         'maj11': [0, 4, 7, 11, 14, 17],
         'add11': [0, 4, 7, 17],
         'maj7#11': [0, 4, 7, 11, 18],
-        
+
         // Thirteenth chords
         '13': [0, 4, 7, 10, 14, 21],
         'm13': [0, 3, 7, 10, 14, 21],
         'maj13': [0, 4, 7, 11, 14, 21]
     };
-    
+
     return intervals[chordType] || [];
 }
 
@@ -253,13 +254,13 @@ function getChordNotes(chordSymbol) {
     const { root, chordType, bassNote } = parseChord(chordSymbol);
     const chromatic = getChromaticScale(root);
     const intervals = getChordIntervals(chordType);
-    
+
     if (intervals.length === 0) {
         throw new Error(`No intervals defined for chord type: ${chordType}`);
     }
-    
+
     let notes = intervals.map(interval => getInterval(chromatic, interval));
-    
+
     // Handle slash chords - put bass note first
     if (bassNote) {
         if (notes.includes(bassNote)) {
@@ -270,7 +271,7 @@ function getChordNotes(chordSymbol) {
             notes = [bassNote, ...notes];
         }
     }
-    
+
     return notes;
 }
 
@@ -280,7 +281,7 @@ function getChordNotes(chordSymbol) {
 function normalizeNote(note) {
     // Remove any octave numbers
     note = note.replace(/\d+/g, '');
-    
+
     // Map enharmonic equivalents to a standard form
     const enharmonicMap = {
         'B#': 'C', 'Dbb': 'C',
@@ -296,7 +297,7 @@ function normalizeNote(note) {
         'A#': 'A#', 'Bb': 'A#', 'Cbb': 'A#',
         'A##': 'B', 'B': 'B', 'Cb': 'B'
     };
-    
+
     return enharmonicMap[note] || note;
 }
 
@@ -306,27 +307,27 @@ function normalizeNote(note) {
 function findScalesForChord(chordSymbol) {
     // Get the notes in the chord
     const chordNotes = getChordNotes(chordSymbol);
-    
+
     // Normalize chord notes for comparison
     const normalizedChordNotes = new Set(chordNotes.map(note => normalizeNote(note)));
-    
+
     // Load the scales data
     const data = getLoadedNotesData();
-    
+
     const matchingScales = [];
-    
+
     // Iterate through all root notes and modes
     for (const noteEntry of data.notes) {
         const root = noteEntry.root;
         for (const [mode, scaleNotes] of Object.entries(noteEntry.modes)) {
             // Normalize scale notes for comparison
             const normalizedScaleNotes = new Set(scaleNotes.map(note => normalizeNote(note)));
-            
+
             // Check if all chord notes are in the scale
-            const allNotesPresent = [...normalizedChordNotes].every(note => 
+            const allNotesPresent = [...normalizedChordNotes].every(note =>
                 normalizedScaleNotes.has(note)
             );
-            
+
             if (allNotesPresent) {
                 matchingScales.push({
                     root: root,
@@ -336,7 +337,7 @@ function findScalesForChord(chordSymbol) {
             }
         }
     }
-    
+
     return matchingScales;
 }
 
@@ -360,27 +361,27 @@ if (typeof module !== 'undefined' && module.exports) {
 if (typeof require !== 'undefined' && require.main === module) {
     (async () => {
         await loadNotesData();
-        
+
         console.log('='.repeat(50));
         console.log('CHORD NOTES EXAMPLES');
         console.log('='.repeat(50));
-        
+
         const testChords = ['C', 'Dm7', 'G7', 'Fmaj7', 'Am7b5', 'C/E'];
-        
+
         for (const chord of testChords) {
             const notes = getChordNotes(chord);
             console.log(`\n${chord}: ${notes.join(', ')}`);
         }
-        
+
         console.log('\n' + '='.repeat(50));
         console.log('SCALE FINDER EXAMPLE');
         console.log('='.repeat(50));
-        
+
         const chordToAnalyze = 'G7';
         console.log(`\nFinding scales for ${chordToAnalyze}...`);
         const scales = findScalesForChord(chordToAnalyze);
         console.log(`Found ${scales.length} scales:\n`);
-        
+
         // Group by mode
         const byMode = {};
         for (const scale of scales) {
@@ -389,7 +390,7 @@ if (typeof require !== 'undefined' && require.main === module) {
             }
             byMode[scale.mode].push(scale.root);
         }
-        
+
         const modeOrder = ['ionian', 'dorian', 'phrygian', 'lydian', 'mixolydian', 'aeolian', 'locrian'];
         for (const mode of modeOrder) {
             if (byMode[mode]) {

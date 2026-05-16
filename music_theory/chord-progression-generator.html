@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chord Progression Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/chord-progression-generator.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../index.html" class="logo">Chord Progression Generator</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>🎵 Chord Progression Generator</h1>
+            <p class="subtitle">Generate common chord progressions in any key</p>
+        
+        <div id="result" class="result">
+            <div class="key-display" id="keyDisplay"></div>
+            <div class="chord-display" id="chordDisplay"></div>
+            <div class="progression-name" id="progressionName"></div>
+        </div>
+        
+        <br/>
+        <br/>
+
+        <div class="control-group">
+            <label for="progressionSelect">Choose a Chord Progression:</label>
+            <select id="progressionSelect">
+                <option value="I-V-vi-IV">I-V-vi-IV (Pop Progression)</option>
+                <option value="vi-IV-I-V">vi-IV-I-V (Pop Alternative)</option>
+                <option value="ii-V-I">ii-V-I (Jazz Standard)</option>
+                <option value="I-vi-ii-V">I-vi-ii-V (50s Progression)</option>
+                <option value="I-IV-V-I">I-IV-V-I (Classic Blues)</option>
+                <option value="vi-ii-V-I">vi-ii-V-I (Circle Progression)</option>
+                <option value="I-bVII-IV-I">I-bVII-IV-I (Mixolydian)</option>
+                <option value="i-bVI-bVII-i">i-bVI-bVII-i (Minor Pop)</option>
+                <option value="i-iv-V-i">i-iv-V-i (Natural Minor)</option>
+                <option value="I-iii-vi-IV">I-iii-vi-IV (Descending)</option>
+            </select>
+        </div>
+
+        <button onclick="generateProgression()">🎲 Generate Progression in Random Key</button>
+
+        </div>
+    </main>
+    <script src="js/chord-progression-generator.js"></script>
+</body>
+</html>

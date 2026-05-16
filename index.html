@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webapps Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Core Colors */
+            --background: #fafafa;
+            --surface: #ffffff;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            
+            /* Typography */
+            --font-serif: 'Lora', serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 0.75rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            
+            /* Border Radius */
+            --border-radius: 0.5rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: var(--space-md) 0;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-lg);
+        }
+
+        .container {
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: var(--space-xl);
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            color: var(--text-primary);
+            margin-bottom: var(--space-md);
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        .category {
+            margin-top: var(--space-xl);
+        }
+
+        .category-title {
+            font-family: var(--font-serif);
+            color: var(--text-primary);
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-sm);
+            border-bottom: 2px solid var(--primary);
+            font-size: 1.3em;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+        }
+
+        .app-card {
+            background: var(--primary);
+            border-radius: var(--border-radius);
+            padding: var(--space-xl);
+            text-decoration: none;
+            color: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: var(--shadow);
+        }
+
+        .app-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .app-card h2 {
+            font-family: var(--font-serif);
+            font-size: 1.5em;
+            margin-bottom: var(--space-sm);
+            color: white;
+        }
+
+        .app-card p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            margin-top: var(--space-xl);
+            padding-top: var(--space-lg);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Webapps Hub</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Webapps Hub</h1>
+            <p class="subtitle">A collection of interactive web applications</p>
+
+            <div class="category">
+                <h3 class="category-title">Music Theory</h3>
+                <div class="apps-grid">
+                    <a href="music_theory/chord_finder.html" class="app-card">
+                        <h2>Chord Finder</h2>
+                        <p>Discover chord notes and scales with an interactive note wheel visualization</p>
+                    </a>
+                    <a href="music_theory/diatonic_chord_reference.html" class="app-card">
+                        <h2>Diatonic Reference</h2>
+                        <p>Generate complete diatonic chord progressions for any key or mode</p>
+                    </a>
+                    <a href="music_theory/chord-progression-generator.html" class="app-card">
+                        <h2>Chord Progression Generator</h2>
+                        <p>Generate common chord progressions in any key with popular patterns and variations</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="category">
+                <h3 class="category-title">Hobbies & Skills</h3>
+                <div class="apps-grid">
+                    <a href="hobbies/merit_badges.html" class="app-card">
+                        <h2>Merit Badge Tracker</h2>
+                        <p>A structured roadmap for mastering 20 different hobbies from scratch</p>
+                    </a>
+                    <a href="hobbies/nature-bingo.html" class="app-card">
+                        <h2>Nature Bingo</h2>
+                        <p>Daily nature scavenger hunt bingo game to discover the outdoors</p>
+                    </a>
+                </div>
+            </div>
+
+            <footer>
+                <p>Select an app above to get started</p>
+            </footer>
+        </div>
+    </main>
+</body>
+
+</html>

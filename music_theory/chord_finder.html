@@ -5,151 +5,247 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chord Notes & Scale Finder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
+        :root {
+            /* Core Colors */
+            --background: #fafafa;
+            --surface: #ffffff;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            
+            /* Typography */
+            --font-serif: 'Lora', serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 0.75rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            
+            /* Border Radius */
+            --border-radius: 0.5rem;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: var(--font-sans);
+            background: var(--background);
+            color: var(--text-primary);
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
         }
 
-        .container {
-            max-width: 900px;
+        /* Header */
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: var(--space-md) 0;
+        }
+
+        nav {
+            max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            padding: 40px;
+            padding: 0 var(--space-lg);
         }
 
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-lg);
+        }
+
+        /* App Container */
+        .container {
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: var(--space-xl);
+            margin: var(--space-xl) 0;
+        }
+
+        /* Typography */
         h1 {
-            color: #667eea;
-            margin-bottom: 10px;
+            font-family: var(--font-serif);
+            color: var(--text-primary);
+            margin-bottom: var(--space-md);
             font-size: 2.5em;
         }
 
+        h2 {
+            font-family: var(--font-serif);
+            color: var(--text-primary);
+            margin: var(--space-xl) 0 var(--space-lg) 0;
+            padding-bottom: var(--space-sm);
+            border-bottom: 2px solid var(--primary);
+        }
+
         .subtitle {
-            color: #666;
-            margin-bottom: 30px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
             font-size: 1.1em;
         }
 
         .section {
-            margin-bottom: 40px;
+            margin-bottom: var(--space-xl);
         }
 
-        h2 {
-            color: #764ba2;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
+        /* Controls */
+        .chord-controls {
+            display: flex;
+            gap: var(--space-lg);
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: var(--space-lg);
+            flex-wrap: wrap;
         }
 
-        .input-group {
-            margin-bottom: 20px;
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+            flex: 0 0 auto;
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
+        .control-group label {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
         }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            transition: border-color 0.3s;
+        .control-group input[type="text"] {
+            width: 250px;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            background: var(--surface);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
         }
 
-        input[type="text"]:focus {
+        .control-group input[type="text"]:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: var(--space-sm) var(--space-lg);
             font-size: 16px;
-            border-radius: 6px;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: background 0.2s;
             font-weight: 600;
+            font-family: var(--font-sans);
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            background: var(--primary-dark);
         }
 
-        button:active {
-            transform: translateY(0);
-        }
-
-        .note {
-            background: #667eea;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-
+        /* Quick Chords */
         .quick-chords {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-            margin-bottom: 10px;
+            gap: var(--space-xs);
+            margin-top: var(--space-md);
+            margin-bottom: var(--space-md);
             justify-content: center;
             font-size: 14px;
-            color: #666;
+            color: var(--text-secondary);
+            align-items: center;
         }
 
         .quick-chord {
-            background: #e9ecef;
+            background: #f8fafc;
             padding: 6px 12px;
-            border-radius: 4px;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
             font-size: 14px;
+            border: 1px solid var(--border);
         }
 
         .quick-chord:hover {
-            background: #667eea;
+            background: var(--primary);
             color: white;
+            border-color: var(--primary);
         }
 
-        .loading {
+        /* Chord Display */
+        #chord-notes-display {
             text-align: center;
-            padding: 20px;
-            color: #667eea;
+            margin: var(--space-lg) 0;
+            padding: var(--space-lg);
+            background: #f8fafc;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary);
         }
 
+        #chord-notes-display .chord-name {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-md);
+        }
+
+        #chord-notes-display .chord-notes {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        #chord-notes-display .note {
+            background: var(--primary);
+            color: white;
+            padding: var(--space-sm) var(--space-lg);
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        /* Note Wheel */
         #note-wheel-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 30px 0;
+            margin: var(--space-xl) 0;
         }
 
         #note-wheel {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 30px;
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            padding: var(--space-xl);
         }
 
         .mode-segment {
@@ -169,7 +265,7 @@
         .note-label {
             font-size: 16px;
             font-weight: 700;
-            fill: #333;
+            fill: var(--text-primary);
             text-anchor: middle;
             pointer-events: none;
             user-select: none;
@@ -178,7 +274,7 @@
         .mode-label {
             font-size: 10px;
             font-weight: 600;
-            fill: #4b5563;
+            fill: var(--secondary);
             text-anchor: middle;
             pointer-events: none;
             user-select: none;
@@ -187,7 +283,7 @@
         .wheel-center-text {
             font-size: 16px;
             font-weight: 700;
-            fill: #764ba2;
+            fill: var(--primary);
             text-anchor: middle;
             pointer-events: none;
         }
@@ -195,75 +291,18 @@
         .wheel-info-text {
             font-size: 12px;
             font-weight: 600;
-            fill: #667eea;
+            fill: var(--primary);
             text-anchor: middle;
             pointer-events: none;
         }
 
-        .chord-controls {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            align-items: flex-end;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            flex: 0 0 auto;
-        }
-
-        .control-group label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #555;
-        }
-
-        .control-group input[type="text"] {
-            width: 250px;
-        }
-
-        #chord-notes-display {
-            text-align: center;
-            margin: 20px 0;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-
-        #chord-notes-display .chord-name {
-            font-size: 20px;
-            font-weight: 700;
-            color: #764ba2;
-            margin-bottom: 10px;
-        }
-
-        #chord-notes-display .chord-notes {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        #chord-notes-display .note {
-            background: #667eea;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 16px;
-        }
-
+        /* Tooltip */
         #mode-tooltip {
             position: absolute;
             background: rgba(0, 0, 0, 0.9);
             color: white;
             padding: 12px 16px;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             font-size: 14px;
             pointer-events: none;
             opacity: 0;
@@ -296,17 +335,42 @@
         }
 
         #mode-tooltip .tooltip-note.chord-note {
-            background: #667eea;
+            background: var(--primary);
             color: white;
             font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: var(--space-lg);
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .chord-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .control-group input[type="text"] {
+                width: 100%;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>🎵 Chord Notes & Scale Finder</h1>
-        <p class="subtitle">Find notes in any chord and discover which scales contain them</p>
+    <header>
+        <nav>
+            <a href="../index.html" class="logo">Chord Notes & Scale Finder</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>🎵 Chord Notes & Scale Finder</h1>
+            <p class="subtitle">Find notes in any chord and discover which scales contain them</p>
 
         <div id="mode-tooltip">
             <div class="tooltip-title"></div>
@@ -349,8 +413,9 @@
             </div>
         </div>
     </div>
+    </main>
 
-    <script src="chord_notes.js"></script>
+    <script src="js/chord_notes.js"></script>
     <script>
         // Load data on page load
         let dataLoaded = false;
