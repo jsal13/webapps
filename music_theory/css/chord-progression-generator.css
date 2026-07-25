@@ -147,19 +147,20 @@ button:active {
   transform: translateY(0);
 }
 
-.result {
+.practice-card {
   margin-top: var(--space-xl);
   padding: var(--space-xl);
-  background: var(--primary);
+  background: var(--surface);
+  border: 3px solid var(--primary);
   border-radius: var(--border-radius);
-  color: white;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  color: var(--text-primary);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.5s ease;
 }
 
-.result.show {
+.practice-card.show {
   opacity: 1;
   transform: translateY(0);
 }
@@ -167,23 +168,107 @@ button:active {
 .key-display {
   font-size: 1.2em;
   margin-bottom: var(--space-md);
-  font-weight: 500;
-  opacity: 0.95;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .chord-display {
   font-family: var(--font-serif);
   font-size: 2em;
   font-weight: 700;
-  letter-spacing: 2px;
-  word-spacing: 10px;
+  letter-spacing: 1px;
+  word-spacing: 6px;
   margin-bottom: var(--space-sm);
+  color: var(--text-primary);
+}
+
+.ii-v-emphasis {
+  color: var(--primary);
 }
 
 .progression-name {
-  font-size: 0.9em;
-  opacity: 0.9;
+  font-size: 0.95em;
+  color: var(--text-secondary);
   font-style: italic;
+}
+
+.solution-toggle {
+  margin-top: var(--space-md);
+  background: #e2e8f0;
+  color: var(--text-primary);
+  padding: var(--space-sm) var(--space-lg);
+}
+
+.solution-toggle:hover {
+  background: #cbd5e1;
+}
+
+.solution-box {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  background: #f8fafc;
+  color: var(--text-primary);
+  text-align: left;
+}
+
+.solution-box.hidden {
+  display: none;
+}
+
+.solution-title {
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: var(--space-xs);
+}
+
+.practice-controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-top: var(--space-lg);
+  align-items: end;
+}
+
+.format-control {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-xs);
+}
+
+.format-control > label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.format-select {
+  min-width: 140px;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+}
+
+.secondary-button {
+  background: #e2e8f0;
+  color: var(--text-primary);
+}
+
+.secondary-button:hover {
+  background: #cbd5e1;
+}
+
+.timer-status {
+  margin-top: var(--space-sm);
+  color: var(--text-secondary);
+  font-size: 0.95em;
 }
 
 @media (max-width: 768px) {

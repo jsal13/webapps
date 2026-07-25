@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secondary Dominant Practice</title>
+    <link rel="stylesheet" href="css/chord-progression-generator.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../index.html" class="logo">Secondary Dominant Practice</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>🎼 Secondary Dominant Practice</h1>
+            <p class="subtitle">Generate a random major key and practice the ii-V motion that leads to the next chord.</p>
+
+            <div id="practiceCard" class="practice-card show">
+                <div class="chord-display" id="exerciseDisplay"></div>
+                <button id="solutionToggle" class="solution-toggle" onclick="toggleSolution()">Show solution</button>
+                <div id="solutionBox" class="solution-box hidden">
+                    <div class="solution-title">Solution</div>
+                    <div id="solutionText"></div>
+                </div>
+            </div>
+
+            <div class="practice-controls">
+                <div class="format-control">
+                    <label for="keyTypeSelect">Key type</label>
+                    <select id="keyTypeSelect" class="format-select">
+                        <option value="major">Major</option>
+                        <option value="minor">Minor</option>
+                        <option value="both" selected>Both</option>
+                    </select>
+                </div>
+                <div class="format-control">
+                    <label for="targetFormatSelect">Target chord display</label>
+                    <select id="targetFormatSelect" class="format-select">
+                        <option value="chord">Chord</option>
+                        <option value="roman">Roman</option>
+                        <option value="both" selected>Both</option>
+                    </select>
+                </div>
+                <button onclick="generateExercise()">🎲 New Exercise</button>
+                <button id="timerToggle" class="secondary-button" onclick="toggleTimer()">⏱️ Auto-next: On</button>
+            </div>
+            <div class="timer-status" id="timerStatus">Next exercise in 30 seconds</div>
+        </div>
+    </main>
+
+    <script src="js/secondary-dominant-practice.js"></script>
+</body>
+</html>
