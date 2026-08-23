@@ -1,0 +1,20 @@
+{
+  "roots": ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"],
+  "types": [
+    {"label":"","name":"maj","intervals":[0,4,7]},
+    {"label":"m","name":"min","intervals":[0,3,7]},
+    {"label":"7","name":"dom7","intervals":[0,4,7,10]},
+    {"label":"maj7","name":"maj7","intervals":[0,4,7,11]},
+    {"label":"m7","name":"m7","intervals":[0,3,7,10]},
+    {"label":"dim","name":"dim","intervals":[0,3,6]},
+    {"label":"dim7","name":"dim7","intervals":[0,3,6,9]},
+    {"label":"aug","name":"aug","intervals":[0,4,8]},
+    {"label":"sus2","name":"sus2","intervals":[0,2,7]},
+    {"label":"sus4","name":"sus4","intervals":[0,5,7]},
+    {"label":"add9","name":"add9","intervals":[0,4,7,14]},
+    {"label":"9","name":"9","intervals":[0,4,7,10,14]},
+    {"label":"maj9","name":"maj9","intervals":[0,4,7,11,14]},
+    {"label":"11","name":"11","intervals":[0,4,7,10,14,17]},
+    {"label":"13","name":"13","intervals":[0,4,7,10,14,17,21]}
+  ]
+}

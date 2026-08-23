@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Chord Trainer</title>
+    <link rel="stylesheet" href="css/chord-trainer.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a class="logo" href="../index.html">Webapps</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container">
+            <h1>Chord Trainer</h1>
+            <div class="top-controls">
+                <button id="enable-midi" type="button">Enable MIDI</button>
+                <select id="oscillator-octave">
+                    <option value="-1">Shift one octave down</option>
+                    <option value="0" selected>Normal Octave</option>
+                    <option value="1">Shift one octave up</option>
+                </select>
+            </div>
+            <p class="subtitle">Connect your MIDI keyboard and play the chord shown. Supports the Akai MPK Mini Play via Web MIDI.</p>
+
+            <div class="section">
+                <div class="chord-controls">
+                    <div class="trainer-row target-row">
+                        <div class="control-group">
+                            <label>Target Chord</label>
+                            <div id="target-chord" class="target">—</div>
+                        </div>
+                        <div class="control-group">
+                            <label>Held Notes</label>
+                            <div id="held-notes" class="held">—</div>
+                        </div>
+                    </div>
+
+                    <div class="trainer-row">
+
+                        <div class="control-group">
+                            <button id="show-hint" type="button">Show notes</button>
+                            <div id="hint-notes" class="hint-notes" hidden></div>
+                        </div>
+
+                        <div class="control-group action-group">
+                            <button id="next-chord" type="button">Next chord</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="status" class="loading">MIDI not enabled</div>
+
+                <div id="result" class="container" style="text-align:center;display:none;">
+                    <h2 id="result-text"></h2>
+                </div>
+            </div>
+            <div class="section">
+                <h2>Hints</h2>
+                <p class="subtitle">Plays are evaluated by pitch-class set (inversions and octaves allowed). Use a supported browser like Chrome or Edge.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/chord-trainer.js"></script>
+</body>
+</html>
