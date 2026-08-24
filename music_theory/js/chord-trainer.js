@@ -5,6 +5,7 @@
     const statusEl = document.getElementById('status');
     const enableBtn = document.getElementById('enable-midi');
     const nextBtn = document.getElementById('next-chord');
+    const difficultySelect = document.getElementById('difficulty-level');
     const playOscillatorCheckbox = document.getElementById('play-oscillator');
     const octaveSelect = document.getElementById('oscillator-octave');
     const hintBtn = document.getElementById('show-hint');
@@ -17,6 +18,7 @@
     let held = new Set(); // MIDI note numbers currently held
     let heldPcs = new Set();
     let chords = [];
+    let chordData = null;
     let current = null;
     let audioContext = null;
     let oscillatorOctave = 0;
@@ -65,7 +67,7 @@
         return fetch('../music_theory/data/chords.json')
             .then(r=>r.json())
             .then(data=>{
-                buildChordList(data.roots, data.types);
+                chordData = data;
             });
     }
 
@@ -79,6 +81,26 @@
                 chords.push({name, pcs});
             });
         }
+    }
+
+    const LEVEL_TYPES = {
+        easy: new Set(['maj', 'min']),
+        medium: new Set(['maj', 'min', 'dim', 'aug', 'sus2', 'sus4', 'dom7', 'maj7', 'm7']),
+        hard: null
+    };
+
+    function setDifficulty(level){
+        if(!chordData) return;
+        const allowedTypes = LEVEL_TYPES[level];
+        const types = allowedTypes
+            ? chordData.types.filter(type=>allowedTypes.has(type.name))
+            : chordData.types;
+        buildChordList(chordData.roots, types);
+        pickRandomChord();
+        held.clear();
+        heldPcs.clear();
+        updateHeldUI();
+        showStatus('Ready');
     }
 
     function pickRandomChord(){
@@ -170,6 +192,8 @@
 
     nextBtn.addEventListener('click', ()=>{ pickRandomChord(); held.clear(); heldPcs.clear(); updateHeldUI(); showStatus('Ready'); });
 
+    difficultySelect.addEventListener('change', ()=>setDifficulty(difficultySelect.value));
+
     octaveSelect.addEventListener('change', ()=>{
         oscillatorOctave = Number(octaveSelect.value);
     });
@@ -187,7 +211,7 @@
 
     // init
     loadChordData().then(()=>{
-        pickRandomChord();
+        setDifficulty(difficultySelect.value);
         showStatus('Click "Enable MIDI" to connect your keyboard');
     }).catch(e=>{ showStatus('Failed to load chords: '+e); });
 

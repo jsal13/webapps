@@ -28,6 +28,8 @@ h1{font-family:var(--font-serif);color:var(--text-primary);margin-bottom:var(--s
 .top-controls{display:flex;align-items:center;gap:var(--space-sm);margin-bottom:var(--space-md);flex-wrap:wrap}
 .checkbox-control{display:flex;align-items:center;gap:var(--space-xs);cursor:pointer;color:var(--text-primary);font-size:14px}
 .checkbox-control input{accent-color:var(--primary);width:1rem;height:1rem;cursor:pointer}
+.select-control{display:flex;align-items:center;gap:var(--space-xs);color:var(--text-primary);font-size:14px}
+.select-control select{padding:6px 10px}
 .subtitle{color:var(--text-secondary);margin-bottom:var(--space-xl);font-size:1rem}
 .chord-controls{display:flex;flex-direction:column;gap:var(--space-lg);align-items:center;margin-bottom:var(--space-lg)}
 .trainer-row{display:flex;gap:var(--space-lg);justify-content:center;align-items:flex-end;width:100%;flex-wrap:wrap}

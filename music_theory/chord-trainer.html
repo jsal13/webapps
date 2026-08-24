@@ -18,6 +18,14 @@
             <h1>Chord Trainer</h1>
             <div class="top-controls">
                 <button id="enable-midi" type="button">Enable MIDI</button>
+                <label class="select-control" for="difficulty-level">
+                    Level
+                    <select id="difficulty-level">
+                        <option value="easy">Easy</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </label>
                 <label class="checkbox-control">
                     <input id="play-oscillator" type="checkbox" checked>
                     Play oscillator
