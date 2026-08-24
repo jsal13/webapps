@@ -5,6 +5,7 @@
     const statusEl = document.getElementById('status');
     const enableBtn = document.getElementById('enable-midi');
     const nextBtn = document.getElementById('next-chord');
+    const playOscillatorCheckbox = document.getElementById('play-oscillator');
     const octaveSelect = document.getElementById('oscillator-octave');
     const hintBtn = document.getElementById('show-hint');
     const hintEl = document.getElementById('hint-notes');
@@ -56,6 +57,10 @@
         voices.delete(note);
     }
 
+    function stopAllNotes(){
+        for(const note of voices.keys()) stopNote(note);
+    }
+
     function loadChordData(){
         return fetch('../music_theory/data/chords.json')
             .then(r=>r.json())
@@ -91,7 +96,7 @@
     function showStatus(msg){ statusEl.textContent = msg; }
 
     function noteOn(note, velocity){
-        playNote(note, velocity);
+        if(playOscillatorCheckbox.checked) playNote(note, velocity);
         held.add(note); heldPcs.add(note%12); updateHeldUI(); checkMatch();
     }
     function noteOff(note){ held.delete(note); // recompute pcs
@@ -167,6 +172,10 @@
 
     octaveSelect.addEventListener('change', ()=>{
         oscillatorOctave = Number(octaveSelect.value);
+    });
+
+    playOscillatorCheckbox.addEventListener('change', ()=>{
+        if(!playOscillatorCheckbox.checked) stopAllNotes();
     });
 
     hintBtn.addEventListener('click', ()=>{
