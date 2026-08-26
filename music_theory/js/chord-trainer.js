@@ -6,6 +6,7 @@
     const enableBtn = document.getElementById('enable-midi');
     const nextBtn = document.getElementById('next-chord');
     const difficultySelect = document.getElementById('difficulty-level');
+    const keyFilterSelect = document.getElementById('key-filter');
     const playOscillatorCheckbox = document.getElementById('play-oscillator');
     const octaveSelect = document.getElementById('oscillator-octave');
     const hintBtn = document.getElementById('show-hint');
@@ -89,13 +90,128 @@
         hard: null
     };
 
-    function setDifficulty(level){
+    const MAJOR_SCALE_STEPS = [0, 2, 4, 5, 7, 9, 11];
+    const MAJOR_DIATONIC_QUALITIES = ['maj', 'min', 'min', 'maj', 'maj', 'min', 'dim'];
+    const SECONDARY_DOMINANT_TYPES = ['dom7', '9', '11', '13'];
+    const BORROWED_IV_TYPES = {
+        easy: ['min'],
+        medium: ['min', 'm7', 'sus2', 'sus4'],
+        hard: ['min', 'm7', 'sus2', 'sus4', 'add9']
+    };
+    const BORROWED_BVII_TYPES = {
+        easy: ['maj'],
+        medium: ['maj', 'dom7', 'sus2', 'sus4'],
+        hard: ['maj', 'dom7', '9', '11', '13', 'sus2', 'sus4', 'add9']
+    };
+
+    function buildTypesForDegree(baseQuality, isDominantDegree){
+        const types = new Set();
+
+        if(baseQuality === 'maj'){
+            // Diatonic major plus common chord-color variants and parallel minor.
+            ['maj', 'maj7', 'add9', 'maj9', 'sus2', 'sus4', 'min', 'm7'].forEach(t=>types.add(t));
+            if(isDominantDegree){
+                ['dom7', '9', '11', '13'].forEach(t=>types.add(t));
+            }
+        } else if(baseQuality === 'min'){
+            // Diatonic minor plus common color variants and parallel major.
+            ['min', 'm7', 'sus2', 'sus4', 'maj', 'maj7', 'add9'].forEach(t=>types.add(t));
+        } else if(baseQuality === 'dim'){
+            ['dim', 'dim7'].forEach(t=>types.add(t));
+        }
+
+        return types;
+    }
+
+    function buildKeyChordList(selectedKey, allowedTypes, level){
+        if(selectedKey === 'any'){
+            const types = allowedTypes
+                ? chordData.types.filter(type=>allowedTypes.has(type.name))
+                : chordData.types;
+            buildChordList(chordData.roots, types);
+            return;
+        }
+
+        const keyRootIndex = chordData.roots.indexOf(selectedKey);
+        if(keyRootIndex === -1){
+            chords = [];
+            return;
+        }
+
+        const typeByName = new Map(chordData.types.map(type=>[type.name, type]));
+        const keyChords = [];
+        const seen = new Set();
+
+        function addChord(rootIndex, type){
+            const key = `${rootIndex}:${type.name}`;
+            if(seen.has(key)) return;
+            seen.add(key);
+            const rootName = chordData.roots[rootIndex];
+            const pcs = type.intervals.map(i=> (rootIndex + i) % 12);
+            keyChords.push({name: rootName + (type.label || ''), pcs});
+        }
+
+        for(let degree=0;degree<MAJOR_SCALE_STEPS.length;degree++){
+            const rootIndex = (keyRootIndex + MAJOR_SCALE_STEPS[degree]) % 12;
+            const degreeTypes = buildTypesForDegree(MAJOR_DIATONIC_QUALITIES[degree], degree === 4);
+
+            chordData.types.forEach(type=>{
+                if(!degreeTypes.has(type.name)) return;
+                if(allowedTypes && !allowedTypes.has(type.name)) return;
+                addChord(rootIndex, type);
+            });
+
+            // Loosen key mode with functional-color options: secondary dominants of diatonic chords.
+            if(degree !== 6){
+                const dominantRootIndex = (rootIndex + 7) % 12;
+                SECONDARY_DOMINANT_TYPES.forEach(typeName=>{
+                    const type = typeByName.get(typeName);
+                    if(!type) return;
+                    if(allowedTypes && !allowedTypes.has(type.name)) return;
+                    addChord(dominantRootIndex, type);
+                });
+            }
+        }
+
+        // Borrowed colors from parallel minor context: iv and bVII.
+        const borrowedIvRootIndex = (keyRootIndex + 5) % 12;
+        const borrowedBviiRootIndex = (keyRootIndex + 10) % 12;
+        const borrowedIvTypeNames = BORROWED_IV_TYPES[level] || BORROWED_IV_TYPES.hard;
+        const borrowedBviiTypeNames = BORROWED_BVII_TYPES[level] || BORROWED_BVII_TYPES.hard;
+
+        borrowedIvTypeNames.forEach(typeName=>{
+            const type = typeByName.get(typeName);
+            if(!type) return;
+            if(allowedTypes && !allowedTypes.has(type.name)) return;
+            addChord(borrowedIvRootIndex, type);
+        });
+
+        borrowedBviiTypeNames.forEach(typeName=>{
+            const type = typeByName.get(typeName);
+            if(!type) return;
+            if(allowedTypes && !allowedTypes.has(type.name)) return;
+            addChord(borrowedBviiRootIndex, type);
+        });
+
+        chords = keyChords;
+    }
+
+    function rebuildChordPool(){
         if(!chordData) return;
+        const level = difficultySelect.value;
+        const selectedKey = keyFilterSelect.value;
         const allowedTypes = LEVEL_TYPES[level];
-        const types = allowedTypes
-            ? chordData.types.filter(type=>allowedTypes.has(type.name))
-            : chordData.types;
-        buildChordList(chordData.roots, types);
+        buildKeyChordList(selectedKey, allowedTypes, level);
+
+        if(!chords.length){
+            current = null;
+            targetEl.textContent = '—';
+            hintEl.hidden = true;
+            hintEl.textContent = '';
+            showStatus('No chords available for this key and level');
+            return;
+        }
+
         pickRandomChord();
         held.clear();
         heldPcs.clear();
@@ -192,7 +308,9 @@
 
     nextBtn.addEventListener('click', ()=>{ pickRandomChord(); held.clear(); heldPcs.clear(); updateHeldUI(); showStatus('Ready'); });
 
-    difficultySelect.addEventListener('change', ()=>setDifficulty(difficultySelect.value));
+    difficultySelect.addEventListener('change', rebuildChordPool);
+
+    keyFilterSelect.addEventListener('change', rebuildChordPool);
 
     octaveSelect.addEventListener('change', ()=>{
         oscillatorOctave = Number(octaveSelect.value);
@@ -211,7 +329,7 @@
 
     // init
     loadChordData().then(()=>{
-        setDifficulty(difficultySelect.value);
+        rebuildChordPool();
         showStatus('Click "Enable MIDI" to connect your keyboard');
     }).catch(e=>{ showStatus('Failed to load chords: '+e); });
 

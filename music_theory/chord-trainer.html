@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Chord Trainer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/chord-trainer.css">
 </head>
 <body>
@@ -26,6 +29,24 @@
                         <option value="hard">Hard</option>
                     </select>
                 </label>
+                <label class="select-control" for="key-filter">
+                    Key
+                    <select id="key-filter">
+                        <option value="C" selected>C major</option>
+                        <option value="C#">C# major</option>
+                        <option value="D">D major</option>
+                        <option value="D#">D# major</option>
+                        <option value="E">E major</option>
+                        <option value="F">F major</option>
+                        <option value="F#">F# major</option>
+                        <option value="G">G major</option>
+                        <option value="G#">G# major</option>
+                        <option value="A">A major</option>
+                        <option value="A#">A# major</option>
+                        <option value="B">B major</option>
+                        <option value="any">Any Key</option>
+                    </select>
+                </label>
                 <label class="checkbox-control">
                     <input id="play-oscillator" type="checkbox" checked>
                     Play oscillator
@@ -36,23 +57,22 @@
                     <option value="1">Shift one octave up</option>
                 </select>
             </div>
+            <p class="control-help">Key mode includes diatonic chords, related colors, secondary dominants, and borrowed iv/bVII options.</p>
             <p class="subtitle">Connect your MIDI keyboard and play the chord shown. Supports the Akai MPK Mini Play via Web MIDI.</p>
 
             <div class="section">
                 <div class="chord-controls">
-                    <div class="trainer-row target-row">
-                        <div class="control-group">
-                            <label>Target Chord</label>
-                            <div id="target-chord" class="target">—</div>
-                        </div>
-                        <div class="control-group">
-                            <label>Held Notes</label>
-                            <div id="held-notes" class="held">—</div>
-                        </div>
+                    <div class="control-group target-group">
+                        <label>Target Chord</label>
+                        <div id="target-chord" class="target">—</div>
                     </div>
 
-                    <div class="trainer-row">
+                    <div class="control-group held-group">
+                        <label>Held Notes</label>
+                        <div id="held-notes" class="held">—</div>
+                    </div>
 
+                    <div class="trainer-row action-row">
                         <div class="control-group">
                             <button id="show-hint" type="button">Show notes</button>
                             <div id="hint-notes" class="hint-notes" hidden></div>
