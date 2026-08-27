@@ -60,6 +60,16 @@ Shared visual conventions include Lora and Manrope loaded from Google Fonts on m
 - `oscillator-octave` changes the generated oscillator pitch only, not the displayed MIDI notes or chord matching.
 - Web MIDI and Web Audio require a supported browser and, for MIDI, a connected/authorized device. Keep audio cleanup and note-off handling intact when changing playback behavior.
 
+### Bass Trainer
+
+- Entry page: `music_theory/bass-trainer.html`
+- Styles: `music_theory/css/bass-trainer.css`
+- Behavior: `music_theory/js/bass-trainer.js`
+- Uses Web Audio to analyze a microphone or audio interface input with a 16384-sample FFT, display a live 30-400 Hz bass spectrum, and estimate the nearest musical note.
+- Supports a 0.25, 0.5, or 1 second note hold time. Confirmed notes are kept in a recent history of eight and cleared after five seconds of silence.
+- The Try demo signal button exercises the visualizer without microphone access. Audio input is not routed to speakers, avoiding feedback.
+- Microphone access requires a supported browser and a secure context. For local testing, serve the repository with `python3 -m http.server 4173` and open `http://localhost:4173`.
+
 ### Diatonic Chord Reference
 
 - Entry page: `music_theory/diatonic_chord_reference.html`

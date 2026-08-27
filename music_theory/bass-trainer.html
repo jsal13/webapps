@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Practice identifying bass notes with live audio input.">
+  <title>Bass Trainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/bass-trainer.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="wordmark" href="../index.html" aria-label="Webapps home">WEBAPPS</a>
+      <div class="status"><span class="status-dot" id="statusDot"></span><span id="statusText">Ready to listen</span></div>
+    </header>
+
+    <section class="intro">
+      <p class="eyebrow">BASS NOTE TRAINING <span>01</span></p>
+      <h1>Hear the note.<br>Train your ear.</h1>
+      <p class="lede">Connect your bass or audio interface and practice identifying notes with live frequency analysis.</p>
+    </section>
+
+    <section class="note-card" aria-label="Detected musical note">
+      <div>
+        <p class="eyebrow">APPROXIMATE NOTE</p>
+        <p class="note-value" id="detectedNote">--</p>
+      </div>
+      <p class="note-frequency"><span id="noteFrequency">--</span> Hz <small>PEAK</small></p>
+    </section>
+
+    <section class="history-card" aria-label="Recent notes">
+      <div class="history-heading">
+        <p class="eyebrow">RECENT NOTES</p>
+        <span>LAST 8 / CLEARS AFTER 5 SEC SILENCE</span>
+      </div>
+      <ol class="note-history" id="noteHistory"><li class="history-empty">--</li></ol>
+    </section>
+
+    <section class="visualizer-panel" aria-label="Frequency spectrum">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">FREQUENCY / AMPLITUDE</p>
+          <p class="reading"><span id="peakFrequency">--</span><small> Hz PEAK</small></p>
+        </div>
+        <div class="level-readout"><span>LEVEL</span><strong id="levelValue">-∞ dB</strong></div>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="spectrum" aria-label="Live frequency spectrum graph"></canvas>
+        <div class="amplitude-axis" aria-hidden="true"><span>0 dB</span><span>-20 dB</span><span>-40 dB</span><span>-60 dB</span><span>-80 dB</span></div>
+        <div class="empty-state" id="emptyState"><span class="play-mark">▶</span><span>Start listening to reveal the spectrum</span></div>
+      </div>
+      <div class="axis"><span>20 Hz</span><span>100 Hz</span><span>1 kHz</span><span>10 kHz</span><span>20 kHz</span></div>
+    </section>
+
+    <section class="controls" aria-label="Audio controls">
+      <div class="control-group mode-group">
+        <label for="modeSelect">INSTRUMENT MODE</label>
+        <select id="modeSelect">
+          <option value="bass">Bass / 30-400 Hz</option>
+        </select>
+      </div>
+      <div class="control-group duration-group">
+        <label for="noteDurationSelect">NOTE HOLD TIME</label>
+        <select id="noteDurationSelect">
+          <option value="0.25">0.25 seconds</option>
+          <option value="0.5" selected>0.5 seconds</option>
+          <option value="1">1 second</option>
+        </select>
+      </div>
+      <div class="control-group input-group">
+        <label for="inputSelect">INPUT SOURCE</label>
+        <select id="inputSelect"><option value="default">Default microphone / interface</option></select>
+      </div>
+      <div class="control-actions">
+        <button class="button button-primary" id="startButton" type="button"><span class="button-icon">▶</span> Start listening</button>
+        <button class="button button-secondary" id="demoButton" type="button">Try demo signal</button>
+      </div>
+    </section>
+
+    <details class="diagnostics">
+      <summary>Device diagnostics</summary>
+      <div class="diagnostic-row">
+        <p id="diagnosticText">Checking browser audio access...</p>
+        <button class="button button-secondary" id="refreshButton" type="button">Refresh devices</button>
+      </div>
+    </details>
+
+    <footer class="footer"><span>FFT SIZE <b>16384</b></span><span>REFRESH <b>60 FPS</b></span><span>INPUT <b id="inputStatus">OFFLINE</b></span></footer>
+  </main>
+  <script src="js/bass-trainer.js"></script>
+</body>
+</html>
