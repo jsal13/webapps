@@ -70,6 +70,21 @@ Shared visual conventions include Lora and Manrope loaded from Google Fonts on m
 - The Try demo signal button exercises the visualizer without microphone access. Audio input is not routed to speakers, avoiding feedback.
 - Microphone access requires a supported browser and a secure context. For local testing, serve the repository with `python3 -m http.server 4173` and open `http://localhost:4173`.
 
+### Bass Chord Tone Trainer
+
+- Entry page: `music_theory/bass-chord-tone-trainer.html`
+- Styles: `music_theory/css/bass-chord-tone-trainer.css`
+- Behavior: `music_theory/js/bass-chord-tone-trainer.js`
+- Renders the pitch classes of a chord as scale-degree markers on a standard four-string bass fretboard in `G-D-A-E` order, from the open strings through either fret 12 or fret 20. The SVG view is generated directly in the browser; there is no external data file or framework.
+- Fret matching is chromatic and octave-independent: each fret uses `(open-string pitch + fret) % 12`, then matches that pitch against the current chord tones. Extended intervals such as 9, 11, and 13 therefore appear wherever their pitch classes recur on the neck.
+- Chord tone objects have `{ pitch, name, degree }`. `pitch` is a 0-11 pitch class, `name` uses the sharp-oriented `noteNames` array, and `degree` is the displayed label. The root marker is identified specifically by `degree === '1'`.
+- `makeChord()` generates diatonic triads, sevenths, add9 chords, and hard-mode extended chords from major/minor scale tables. Hard mode can also choose a parallel major/minor interpretation. `parseChordInput()` handles one-letter roots with one optional `#` or `b` and the qualities listed in `chordSymbols`.
+- The UI supports random generation by key and difficulty, typed chord plotting, and fret-range changes. Select changes regenerate a random chord; typed chords replace the generated key label with `Custom chord`.
+- Main DOM hooks are `#fretboard`, `#legend`, `#keySelect`, `#difficultySelect`, `#fretRangeSelect`, `#randomizeButton`, `#chordInput`, and `#plotChordButton`. `showChord()` and `generateChord()` update the summary, accessibility label, fret range text, SVG, legend, and total marker count.
+- The page uses inline SVG creation helpers rather than D3. `drawFretboard()` owns fret geometry, fret markers, string labels, and note markers; `drawLegend()` owns the degree/name legend and counts rendered `.note-marker` elements.
+- Note-name spelling is intentionally simplified to sharp names (`C#`, `D#`, etc.), even when the user enters an enharmonic flat root. Supported typed qualities include triads, sus2/sus4, augmented/diminished forms, sevenths, add9, 9, 11, and 13 variants. Unsupported symbols produce a status message in `#inputMessage`.
+- Keep the four-string ordering, pitch-class modulo-12 matching, chord interval/degree tables, and relative script/style paths synchronized when changing the trainer. There is no configured build or test runner; use editor diagnostics and browser checks from the repository root for validation.
+
 ### Diatonic Chord Reference
 
 - Entry page: `music_theory/diatonic_chord_reference.html`

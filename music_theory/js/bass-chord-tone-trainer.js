@@ -1,6 +1,10 @@
 const fretboard = document.getElementById('fretboard');
 const legend = document.getElementById('legend');
 const noteCount = document.getElementById('noteCount');
+const markerTooltip = document.createElement('div');
+markerTooltip.className = 'marker-tooltip';
+markerTooltip.setAttribute('role', 'tooltip');
+document.body.appendChild(markerTooltip);
 
 const strings = [
   { name: 'G', pitch: 7 },
@@ -67,12 +71,33 @@ function addText(parent, text, attributes = {}) {
   return element;
 }
 
+function positionMarkerTooltip(x, y) {
+  const offset = 14;
+  const rightEdge = window.innerWidth - markerTooltip.offsetWidth - 8;
+  const bottomEdge = window.innerHeight - markerTooltip.offsetHeight - 8;
+  markerTooltip.style.left = `${Math.min(x + offset, rightEdge)}px`;
+  markerTooltip.style.top = `${Math.min(y + offset, bottomEdge)}px`;
+}
+
+function showMarkerTooltip(text, event) {
+  markerTooltip.textContent = text;
+  markerTooltip.classList.add('visible');
+  if (event) {
+    positionMarkerTooltip(event.clientX, event.clientY);
+  }
+}
+
+function hideMarkerTooltip() {
+  markerTooltip.classList.remove('visible');
+}
+
 function drawFretboard() {
   const visibleFrets = Number(document.getElementById('fretRangeSelect').value);
-  const firstFretWidth = (neckWidth / visibleFrets) * 1.25;
-  const otherFretWidth = (neckWidth - firstFretWidth) / (visibleFrets - 1);
-  const fretBoundary = fret => fret === 0 ? dimensions.left : dimensions.left + firstFretWidth + (fret - 1) * otherFretWidth;
-  const fretCenter = fret => fret === 0 ? dimensions.left : fret === 1 ? dimensions.left + firstFretWidth / 2 : dimensions.left + firstFretWidth + (fret - 1.5) * otherFretWidth;
+  const fretSpacingConstant = 10.5;
+  const fretScale = 1 - Math.pow(2, -visibleFrets / fretSpacingConstant);
+  const fretPosition = fret => (1 - Math.pow(2, -fret / fretSpacingConstant)) / fretScale;
+  const fretBoundary = fret => dimensions.left + neckWidth * fretPosition(fret);
+  const fretCenter = fret => fret === 0 ? dimensions.left : (fretBoundary(fret - 1) + fretBoundary(fret)) / 2;
   fretboard.innerHTML = '';
   fretboard.setAttribute('viewBox', `0 0 ${dimensions.width} ${dimensions.height}`);
   fretboard.setAttribute('preserveAspectRatio', 'xMinYMin meet');
@@ -113,9 +138,24 @@ function drawFretboard() {
       if (!note) continue;
       const x = fretCenter(fret);
       const group = createSvgElement('g', { class: note.degree === '1' ? 'note-marker root-marker' : 'note-marker' });
+      const title = createSvgElement('title');
+      title.textContent = note.name;
+      group.appendChild(title);
       group.appendChild(createSvgElement('circle', { cx: x, cy: y, r: 16 }));
       addText(group, note.degree, { x, y: y + 5, 'text-anchor': 'middle', class: 'degree-label' });
-      group.setAttribute('aria-label', `${string.name} string, fret ${fret}, ${note.name}, scale degree ${note.degree}`);
+      const markerDescription = `${note.name} (${note.degree}) - ${string.name} string, fret ${fret}`;
+      const tooltipText = note.name;
+      group.setAttribute('aria-label', markerDescription);
+      group.setAttribute('tabindex', '0');
+      group.addEventListener('mouseenter', event => showMarkerTooltip(tooltipText, event));
+      group.addEventListener('mousemove', event => positionMarkerTooltip(event.clientX, event.clientY));
+      group.addEventListener('mouseleave', hideMarkerTooltip);
+      group.addEventListener('focus', () => {
+        const bounds = group.getBoundingClientRect();
+        showMarkerTooltip(tooltipText);
+        positionMarkerTooltip(bounds.right, bounds.top);
+      });
+      group.addEventListener('blur', hideMarkerTooltip);
       fretboard.appendChild(group);
     }
   });
