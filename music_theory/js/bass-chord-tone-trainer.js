@@ -68,8 +68,11 @@ function addText(parent, text, attributes = {}) {
 }
 
 function drawFretboard() {
-  const visibleFrets = Number(document.getElementById('fretRangeSelect').value) + 1;
-  const fretWidth = neckWidth / visibleFrets;
+  const visibleFrets = Number(document.getElementById('fretRangeSelect').value);
+  const firstFretWidth = (neckWidth / visibleFrets) * 1.25;
+  const otherFretWidth = (neckWidth - firstFretWidth) / (visibleFrets - 1);
+  const fretBoundary = fret => fret === 0 ? dimensions.left : dimensions.left + firstFretWidth + (fret - 1) * otherFretWidth;
+  const fretCenter = fret => fret === 0 ? dimensions.left : fret === 1 ? dimensions.left + firstFretWidth / 2 : dimensions.left + firstFretWidth + (fret - 1.5) * otherFretWidth;
   fretboard.innerHTML = '';
   fretboard.setAttribute('viewBox', `0 0 ${dimensions.width} ${dimensions.height}`);
   fretboard.setAttribute('preserveAspectRatio', 'xMinYMin meet');
@@ -78,21 +81,21 @@ function drawFretboard() {
   fretboard.appendChild(neck);
 
   for (let fret = 0; fret <= visibleFrets; fret += 1) {
-    const x = dimensions.left + fret * fretWidth;
+    const x = fretBoundary(fret);
     const isNut = fret === 0;
     fretboard.appendChild(createSvgElement('line', {
       x1: x, y1: dimensions.top - 1, x2: x, y2: dimensions.top + neckHeight + 1,
       stroke: isNut ? '#80d8e8' : '#aebdc4', 'stroke-width': isNut ? 5 : 1.5, opacity: isNut ? 1 : .62
     }));
-    if (fret < visibleFrets) addText(fretboard, String(fret), { x: dimensions.left + (fret + .5) * fretWidth, y: 14, 'text-anchor': 'middle', class: 'fret-label' });
+    if (fret > 0) addText(fretboard, String(fret), { x: fretCenter(fret), y: 14, 'text-anchor': 'middle', class: 'fret-label' });
   }
 
-  [3, 5, 7, 9, 15, 17, 19].filter(fret => fret < visibleFrets).forEach(fret => {
-    const x = dimensions.left + (fret + .5) * fretWidth;
+  [3, 5, 7, 9, 15, 17, 19].filter(fret => fret <= visibleFrets).forEach(fret => {
+    const x = fretCenter(fret);
     fretboard.appendChild(createSvgElement('circle', { cx: x, cy: dimensions.top + neckHeight / 2, r: 3.5, fill: '#9bc9dc', opacity: .7 }));
   });
-  if (12 < visibleFrets) {
-    const octaveX = dimensions.left + (12 + .5) * fretWidth;
+  if (12 <= visibleFrets) {
+    const octaveX = fretCenter(12);
     [dimensions.top + neckHeight * .36, dimensions.top + neckHeight * .64].forEach(y => {
       fretboard.appendChild(createSvgElement('circle', { cx: octaveX, cy: y, r: 3.5, fill: '#80d8e8', opacity: .8 }));
     });
@@ -104,11 +107,11 @@ function drawFretboard() {
     addText(fretboard, string.name, { x: 35, y: y + 6, 'text-anchor': 'middle', class: 'string-label' });
     fretboard.appendChild(createSvgElement('line', { x1: dimensions.left, y1: y, x2: dimensions.left + neckWidth, y2: y, stroke: '#d6ddd3', 'stroke-width': 2.5 + stringIndex * .8, opacity: .9 }));
 
-    for (let fret = 0; fret < visibleFrets; fret += 1) {
+    for (let fret = 0; fret <= visibleFrets; fret += 1) {
       const pitch = (string.pitch + fret) % 12;
       const note = noteByPitch.get(pitch);
       if (!note) continue;
-      const x = dimensions.left + (fret + .5) * fretWidth;
+      const x = fretCenter(fret);
       const group = createSvgElement('g', { class: note.degree === '1' ? 'note-marker root-marker' : 'note-marker' });
       group.appendChild(createSvgElement('circle', { cx: x, cy: y, r: 16 }));
       addText(group, note.degree, { x, y: y + 5, 'text-anchor': 'middle', class: 'degree-label' });
@@ -196,7 +199,7 @@ function showChord(chord, keyLabel = 'Custom chord') {
   document.getElementById('chordDegrees').textContent = chord.tones.map(note => note.degree).join(' · ');
   const visibleFret = Number(document.getElementById('fretRangeSelect').value);
   document.getElementById('fretRangeLabel').textContent = `Open position through fret ${visibleFret}`;
-  document.getElementById('fretCount').textContent = `0-${visibleFret}`;
+  document.getElementById('fretCount').textContent = `1-${visibleFret}`;
   fretboard.setAttribute('aria-label', `${chord.rootName}${chord.quality} chord tones on a four-string bass fretboard`);
   drawFretboard();
   drawLegend();
@@ -228,7 +231,7 @@ function generateChord() {
   document.getElementById('chordDegrees').textContent = currentChord.tones.map(note => note.degree).join(' · ');
   const visibleFret = Number(document.getElementById('fretRangeSelect').value);
   document.getElementById('fretRangeLabel').textContent = `Open position through fret ${visibleFret}`;
-  document.getElementById('fretCount').textContent = `0-${visibleFret}`;
+  document.getElementById('fretCount').textContent = `1-${visibleFret}`;
   fretboard.setAttribute('aria-label', `${currentChord.rootName}${currentChord.quality} chord tones on a four-string bass fretboard`);
   drawFretboard();
   drawLegend();

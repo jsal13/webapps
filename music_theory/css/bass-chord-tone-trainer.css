@@ -9,7 +9,7 @@
   --line: #c3ccd0;
   --acid: #80d8e8;
   --green: #294d63;
-  --orange: #3d8fca;
+  --orange: #4873d8;
   --neck: #0b1d35;
 }
 body {
@@ -366,12 +366,12 @@ h1 {
   letter-spacing: 0.04em;
 }
 .note-marker circle {
-  fill: #a6e9f4;
+  fill: #e3f2f5;
   stroke: #061426;
   stroke-width: 1.5;
 }
 .note-marker.root-marker circle {
-  fill: #3d8fca;
+  fill: #4873d8;
 }
 .degree-label {
   fill: #101722;
@@ -405,11 +405,11 @@ h1 {
   border: 1px solid #7f929f;
   border-radius: 50%;
   color: var(--ink);
-  background: #a6e9f4;
+  background: #e3f2f5;
   font-size: 11px;
 }
 .legend-item:first-child .legend-dot {
-  background: #3d8fca;
+  background: #4873d8;
 }
 .footer {
   display: flex;
