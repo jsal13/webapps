@@ -102,27 +102,43 @@ function drawFretboard() {
   fretboard.setAttribute('viewBox', `0 0 ${dimensions.width} ${dimensions.height}`);
   fretboard.setAttribute('preserveAspectRatio', 'xMinYMin meet');
 
-  const neck = createSvgElement('rect', { x: dimensions.left, y: dimensions.top, width: neckWidth, height: neckHeight, fill: '#0b1d35' });
+  const neck = createSvgElement('rect', { x: dimensions.left, y: dimensions.top, width: neckWidth, height: neckHeight, fill: '#2a1f1b' });
   fretboard.appendChild(neck);
 
   for (let fret = 0; fret <= visibleFrets; fret += 1) {
-    const x = fretBoundary(fret);
-    const isNut = fret === 0;
-    fretboard.appendChild(createSvgElement('line', {
-      x1: x, y1: dimensions.top - 1, x2: x, y2: dimensions.top + neckHeight + 1,
-      stroke: isNut ? '#80d8e8' : '#aebdc4', 'stroke-width': isNut ? 5 : 1.5, opacity: isNut ? 1 : .62
-    }));
+    if (fret === 0) {
+      fretboard.appendChild(createSvgElement('line', {
+        x1: dimensions.left, y1: dimensions.top - 1, x2: dimensions.left, y2: dimensions.top + neckHeight + 1,
+        stroke: '#d6b98c', 'stroke-width': 4.5, opacity: 1
+      }));
+    }
     if (fret > 0) addText(fretboard, String(fret), { x: fretCenter(fret), y: 14, 'text-anchor': 'middle', class: 'fret-label' });
   }
 
   [3, 5, 7, 9, 15, 17, 19].filter(fret => fret <= visibleFrets).forEach(fret => {
     const x = fretCenter(fret);
-    fretboard.appendChild(createSvgElement('circle', { cx: x, cy: dimensions.top + neckHeight / 2, r: 3.5, fill: '#9bc9dc', opacity: .7 }));
+    fretboard.appendChild(createSvgElement('circle', {
+      cx: x,
+      cy: dimensions.top + neckHeight / 2,
+      r: 3.4,
+      fill: '#f5efe7',
+      stroke: '#cab7a0',
+      'stroke-width': 0.8,
+      opacity: 0.9
+    }));
   });
   if (12 <= visibleFrets) {
     const octaveX = fretCenter(12);
-    [dimensions.top + neckHeight * .36, dimensions.top + neckHeight * .64].forEach(y => {
-      fretboard.appendChild(createSvgElement('circle', { cx: octaveX, cy: y, r: 3.5, fill: '#80d8e8', opacity: .8 }));
+    [-5.0, 5.0].forEach(offset => {
+      fretboard.appendChild(createSvgElement('circle', {
+        cx: octaveX + offset,
+        cy: dimensions.top + neckHeight / 2,
+        r: 3.4,
+        fill: '#f5efe7',
+        stroke: '#cab7a0',
+        'stroke-width': 0.8,
+        opacity: 0.9
+      }));
     });
   }
 
@@ -130,7 +146,7 @@ function drawFretboard() {
   strings.forEach((string, stringIndex) => {
     const y = dimensions.top + stringIndex * stringGap;
     addText(fretboard, string.name, { x: 35, y: y + 6, 'text-anchor': 'middle', class: 'string-label' });
-    fretboard.appendChild(createSvgElement('line', { x1: dimensions.left, y1: y, x2: dimensions.left + neckWidth, y2: y, stroke: '#d6ddd3', 'stroke-width': 2.5 + stringIndex * .8, opacity: .9 }));
+    fretboard.appendChild(createSvgElement('line', { x1: dimensions.left, y1: y, x2: dimensions.left + neckWidth, y2: y, stroke: '#f0e3d3', 'stroke-width': 2.0 + stringIndex * .7, opacity: .85 }));
 
     for (let fret = 0; fret <= visibleFrets; fret += 1) {
       const pitch = (string.pitch + fret) % 12;
