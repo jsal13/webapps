@@ -1,0 +1,91 @@
+:root {
+  --ink: #202124;
+  --muted: #64666b;
+  --paper: #faf8f3;
+  --surface: #fffdf8;
+  --line: #ddd8cc;
+  --accent: #b5422f;
+  --accent-dark: #823022;
+  --measure: 46rem;
+  --sans: "Avenir Next", "Segoe UI", sans-serif;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--sans);
+  line-height: 1.7;
+}
+
+.page-shell { width: min(calc(100% - 2rem), var(--measure)); margin: 0 auto; }
+.site-header { border-bottom: 1px solid var(--line); background: var(--surface); }
+.site-header .page-shell { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: 1.25rem 0; }
+.brand { color: var(--ink); font-family: var(--serif); font-size: 1.2rem; font-weight: 700; text-decoration: none; }
+.tagline, .eyebrow, .chapter-number { color: var(--muted); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+.tagline { margin: 0; }
+.reading-column { padding: 5rem 0 6rem; }
+.eyebrow, .chapter-number { margin: 0 0 .75rem; font-weight: 700; }
+h1, h2, h3 { font-family: var(--serif); line-height: 1.15; }
+h1 { margin: 0 0 1rem; font-size: clamp(2.8rem, 8vw, 5rem); letter-spacing: 0; }
+h2 { margin: 0 0 .75rem; font-size: 1.8rem; }
+h3 { margin-top: 2.5rem; font-size: 1.4rem; }
+.lede { max-width: 35rem; color: var(--muted); font-size: 1.2rem; }
+.chapter-list { display: grid; gap: 1rem; margin-top: 3.5rem; }
+.site-notice {
+  margin: 1.5rem 0 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid #d9b58b;
+  background: #fff5e8;
+  color: #5e3a00;
+  font-size: .95rem;
+  line-height: 1.5;
+}
+.chapter-card { padding: 1.5rem; border: 1px solid var(--line); border-left: 4px solid var(--accent); background: var(--surface); }
+.chapter-card p:not(.chapter-number) { margin-top: 0; color: var(--muted); }
+.text-link { color: var(--accent-dark); font-weight: 700; text-decoration-thickness: .12em; text-underline-offset: .2em; }
+.text-link:hover, .text-link:focus-visible { color: var(--accent); }
+.section-nav { display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+.section-nav a { max-width: 48%; color: var(--accent-dark); font-weight: 700; }
+.prose { font-size: 1.08rem; }
+.prose p, .prose ul { margin: 1.2rem 0; }
+.chapter-quick-links {
+  margin-top: 2.5rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.chapter-quick-links h2 {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+}
+.chapter-quick-links ul {
+  display: grid;
+  gap: .5rem;
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.chapter-quick-links a {
+  color: var(--accent-dark);
+  font-weight: 700;
+  text-decoration-thickness: .12em;
+  text-underline-offset: .2em;
+}
+.notation { min-height: 8rem; margin: 2rem 0; padding: 1rem; overflow-x: auto; border: 1px solid var(--line); background: #fff; }
+.math { overflow-x: auto; padding: .25rem 0; }
+.site-footer { padding: 1.5rem 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+@media (max-width: 36rem) {
+  .site-header .page-shell { display: block; }
+  .tagline { margin-top: .25rem; }
+  .reading-column { padding-top: 3rem; }
+  .section-nav { display: block; }
+  .section-nav a { display: block; max-width: none; margin-top: 1rem; }
+}
+@media print {
+  .site-header, .site-footer, .section-nav { display: none; }
+  .reading-column { padding: 0; }
+  body { background: white; }
+}
