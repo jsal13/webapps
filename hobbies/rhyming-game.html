@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhyming Beat Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/rhyming-game.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../index.html" class="logo">Rhyming Beat Game</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="game-container" aria-labelledby="gameTitle">
+            <div class="intro">
+                <p class="eyebrow">4/4 wordplay</p>
+                <h1 id="gameTitle">Rhyming Beat Game</h1>
+                <p class="subtitle">Read each prompt line, then fill the following line with your own rhyme.</p>
+            </div>
+
+            <div class="controls">
+                <p class="row-count"><strong>24 lines</strong> · 12 word prompts</p>
+                <div class="mode-control">
+                    <label for="beatMode">Word placement</label>
+                    <select id="beatMode">
+                        <option value="easy-random">Easy Random (2 or 4)</option>
+                        <option value="hard-random">Hard Random (1-4)</option>
+                        <option value="beat-1">Beat 1</option>
+                        <option value="beat-2">Beat 2</option>
+                        <option value="beat-3">Beat 3</option>
+                        <option value="beat-4">Beat 4</option>
+                    </select>
+                </div>
+                <div class="mode-control">
+                    <label for="rhymeLine">Rhyme word on</label>
+                    <select id="rhymeLine">
+                        <option value="first">First line (rhyme on second)</option>
+                        <option value="second">Second line (rhyme on first)</option>
+                        <option value="easy-switching">Easy Switching</option>
+                        <option value="hard-switching">Hard Switching</option>
+                    </select>
+                </div>
+                <div class="mode-control">
+                    <label for="scrollSpeed">Autoscroll</label>
+                    <select id="scrollSpeed">
+                        <option value="0">Off</option>
+                        <option value="32">Slow</option>
+                        <option value="45">Medium</option>
+                        <option value="80">Fast</option>
+                    </select>
+                </div>
+                <button id="newGameButton" type="button">New word set</button>
+            </div>
+
+            <div class="table-wrap">
+                <table class="rhythm-table">
+                    <caption>Twenty-four-line rhyming game with four beat columns per line</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">1</th>
+                            <th scope="col">2</th>
+                            <th scope="col">3</th>
+                            <th scope="col">4</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rhythmGrid"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/rhyming-game.js"></script>
+</body>
+</html>

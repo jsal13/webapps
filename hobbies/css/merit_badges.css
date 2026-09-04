@@ -47,7 +47,7 @@ header {
 }
 
 nav {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--space-lg);
 }
@@ -62,25 +62,33 @@ nav {
 
 /* Main Content */
 main {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: var(--space-xl) var(--space-lg);
 }
 
-.header {
+.app-container {
+    background: var(--surface);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: var(--space-xl);
+    margin: var(--space-xl) 0;
+}
+
+.intro {
     text-align: center;
     max-width: 800px;
     margin: 0 auto var(--space-xl);
 }
 
-.header h1 {
+.intro h1 {
     font-family: var(--font-serif);
     color: var(--text-primary);
     margin-bottom: var(--space-md);
     font-size: 2.5rem;
 }
 
-.header p {
+.intro p {
     color: var(--text-secondary);
     font-size: 1.1rem;
 }
@@ -91,6 +99,26 @@ main {
     margin-bottom: var(--space-xl);
 }
 
+.controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--space-xl);
+    padding: var(--space-lg);
+    background: #f8fafc;
+    border-radius: var(--border-radius);
+}
+
+.control-group {
+    width: min(100%, 400px);
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: var(--space-xs);
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
 #searchBar {
     padding: var(--space-sm) var(--space-lg);
     width: 100%;
@@ -99,7 +127,6 @@ main {
     border: 1px solid var(--border);
     font-size: 1rem;
     outline: none;
-    box-shadow: var(--shadow);
     font-family: var(--font-sans);
 }
 
@@ -210,7 +237,15 @@ main {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .app-container {
+        padding: var(--space-lg);
+    }
+
     .badge-grid {
         grid-template-columns: 1fr;
+    }
+
+    .intro h1 {
+        font-size: 2rem;
     }
 }
