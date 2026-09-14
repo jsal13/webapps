@@ -74,7 +74,22 @@ h3 { margin-top: 2.5rem; font-size: 1.4rem; }
   text-decoration-thickness: .12em;
   text-underline-offset: .2em;
 }
-.notation { min-height: 8rem; margin: 2rem 0; padding: 1rem; overflow-x: auto; border: 1px solid var(--line); background: #fff; }
+.notation { min-height: 8rem; margin: 2rem 0 0; padding: 1rem; overflow-x: auto; border: 1px solid var(--line); background: #fff; }
+.staff-player { display: flex; align-items: center; gap: .75rem; margin: 0 0 2rem; padding: .5rem 1rem; border: 1px solid var(--line); border-top: none; background: #fff; }
+.staff-player-button {
+  padding: .4rem .9rem;
+  border: 1px solid var(--accent-dark);
+  border-radius: .25rem;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.staff-player-button:hover, .staff-player-button:focus-visible { background: var(--accent-dark); }
+.staff-player-button:disabled { opacity: .6; cursor: default; }
+.staff-player-volume { width: 8rem; accent-color: var(--accent); }
 .math { overflow-x: auto; padding: .25rem 0; }
 .site-footer { padding: 1.5rem 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
 @media (max-width: 36rem) {

@@ -22,4 +22,6 @@ Then open `http://localhost:8000/`.
 
 ## Authoring sections
 
-Copy an existing section HTML file, update its chapter and navigation links, and keep lesson-specific content inside `.prose`. Add a staff example with `data-staff` and optional `data-clef` / `data-notes` attributes. External KaTeX and VexFlow assets are loaded from jsDelivr in the section pages that need them.
+Copy an existing section HTML file, update its chapter and navigation links, and keep lesson-specific content inside `.prose`. Add a staff example with a `<div class="notation" data-staff>` element and optional `data-clef` / `data-notes` / `data-tempo` / `data-midi="off"` attributes. External KaTeX and VexFlow assets are loaded from jsDelivr in the section pages that need them.
+
+`data-notes` is a comma-separated list of VexFlow-style tokens, e.g. `c/4/q,e/4/q,g/4/h.` (letter, optional `#`/`b`, octave, duration; append `.` for a dotted duration). Every staff example automatically gets a "Play" button below it that plays the notes back with the Web Audio API (no external MIDI/audio files); set `data-tempo` (beats per minute, default `100`) to change playback speed, or `data-midi="off"` to hide the button for a silent example.

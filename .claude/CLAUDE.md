@@ -102,6 +102,19 @@ Shared visual conventions include Lora and Manrope loaded from Google Fonts on m
 - Supports key type and target display format controls. It also has a 30-second auto-next timer, enabled by default.
 - The entry page uses inline handlers for `generateExercise()`, `toggleSolution()`, and `toggleTimer()`, so those functions must remain global unless the markup is changed at the same time.
 
+## Learning Projects
+
+### Music Theory Primer
+
+- Entry page: `learning/music_theory_primer/index.html`
+- Styles: `learning/music_theory_primer/assets/css/site.css`
+- Behavior: `learning/music_theory_primer/assets/js/site.js`
+- A dependency-light static textbook. Each lesson is its own HTML page under `chapters/<chapter>/`, with KaTeX (loaded from jsDelivr) rendering inline math and VexFlow 5 (loaded from esm.sh) rendering staff notation.
+- Staff examples are authored as `<div class="notation" data-staff data-clef="treble" data-notes="c/4/q,e/4/q,g/4/q" data-tempo="100"></div>` inside a section's `.prose` block. `data-notes` tokens use the format `letter[#|b]/octave/duration[.]` (durations `w,h,q,8,16,32`; trailing `.` = dotted).
+- `site.js` renders each `[data-staff]` block with VexFlow and automatically appends a "Play" button plus a volume slider (`.staff-player`) below it. Playback synthesizes the notes as short triangle-wave tones via the Web Audio API directly in the browser — there is no external MIDI file, audio asset, or added dependency. `data-tempo` sets BPM (default 100) and `data-midi="off"` suppresses the player for a given example.
+- Known gotcha: VexFlow 5's `Voice` constructor requires camelCase `{ numBeats, beatValue }`. The snake_case `num_beats`/`beat_value` silently throws `BadArgument: Too many ticks` once an example mixes non-quarter-note durations (e.g. a half note), even though pure-quarter-note examples happen to work by coincidence.
+- To add a new worked example to any chapter page, just add another `[data-staff]` div to its `.prose`; no other wiring is needed.
+
 ## Working And Validation
 
 - There is no configured build or test command. Use browser checks for behavior and the editor diagnostics for syntax/HTML/CSS issues.
