@@ -1,8 +1,10 @@
 import { Accidental, Formatter, Renderer, Stave, StaveNote, Voice } from "https://esm.sh/vexflow@5.0.0";
+import * as Tone from "https://esm.sh/tone@15.1.22";
 
 const SEMITONES_FROM_C = { c: 0, d: 2, e: 4, f: 5, g: 7, a: 9, b: 11 };
 const BEATS_BY_BASE_DURATION = { w: 4, h: 2, q: 1, 8: 0.5, 16: 0.25, 32: 0.125 };
 let sharedAudioContext = null;
+let pianoSamplerPromise = null;
 
 // Parses a VexFlow-style note token like "c#/4/q." into { midi, beats }.
 function parseNoteToken(token) {
@@ -28,7 +30,7 @@ function midiToFrequency(midi) {
 }
 
 // Plays a sequence of note tokens as short triangle-wave tones, one after another.
-function playNoteTokens(tokens, bpm, volume) {
+function playWithOscillator(tokens, bpm, volume) {
   if (!sharedAudioContext) {
     sharedAudioContext = new (window.AudioContext || window.webkitAudioContext)();
   }
@@ -64,6 +66,48 @@ function playNoteTokens(tokens, bpm, volume) {
   return tokens.reduce((total, token) => total + parseNoteToken(token).beats, 0) * secondsPerBeat;
 }
 
+function loadPianoSampler() {
+  if (!pianoSamplerPromise) {
+    pianoSamplerPromise = new Promise((resolve, reject) => {
+      const sampler = new Tone.Sampler({
+        urls: {
+          C1: "C1.mp3",
+          C2: "C2.mp3",
+          C3: "C3.mp3",
+          C4: "C4.mp3",
+          C5: "C5.mp3",
+          C6: "C6.mp3"
+        },
+        baseUrl: "https://tonejs.github.io/audio/salamander/",
+        onload: () => resolve(sampler),
+        onerror: reject
+      }).toDestination();
+    });
+  }
+  return pianoSamplerPromise;
+}
+
+async function playNoteTokens(tokens, bpm, volume) {
+  try {
+    await Tone.start();
+    const sampler = await loadPianoSampler();
+    const secondsPerBeat = 60 / bpm;
+    let startTime = Tone.now() + 0.05;
+
+    tokens.forEach((token) => {
+      const { midi, beats } = parseNoteToken(token);
+      const duration = beats * secondsPerBeat;
+      sampler.triggerAttackRelease(Tone.Frequency(midi, "midi").toNote(), duration, startTime, volume);
+      startTime += duration;
+    });
+
+    return tokens.reduce((total, token) => total + parseNoteToken(token).beats, 0) * secondsPerBeat;
+  } catch (error) {
+    console.warn("Piano samples could not be loaded; using oscillator fallback.", error);
+    return playWithOscillator(tokens, bpm, volume);
+  }
+}
+
 function attachPlayer(container, tokens, bpm) {
   const player = document.createElement("div");
   player.className = "staff-player";
@@ -82,9 +126,11 @@ function attachPlayer(container, tokens, bpm) {
   volumeSlider.value = "0.7";
   volumeSlider.setAttribute("aria-label", "Playback volume");
 
-  button.addEventListener("click", () => {
+  button.addEventListener("click", async () => {
     button.disabled = true;
-    const seconds = playNoteTokens(tokens, bpm, Number(volumeSlider.value));
+    button.textContent = "Loading piano...";
+    const seconds = await playNoteTokens(tokens, bpm, Number(volumeSlider.value));
+    button.textContent = "▶ Play";
     setTimeout(() => { button.disabled = false; }, seconds * 1000);
   });
 
