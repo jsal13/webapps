@@ -1,4 +1,4 @@
-import { Formatter, Renderer, Stave, StaveNote, Voice } from "https://esm.sh/vexflow@5.0.0";
+import { Accidental, Formatter, Renderer, Stave, StaveNote, Voice } from "https://esm.sh/vexflow@5.0.0";
 
 const SEMITONES_FROM_C = { c: 0, d: 2, e: 4, f: 5, g: 7, a: 9, b: 11 };
 const BEATS_BY_BASE_DURATION = { w: 4, h: 2, q: 1, 8: 0.5, 16: 0.25, 32: 0.125 };
@@ -103,28 +103,36 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  document.querySelectorAll("[data-staff]").forEach((container) => {
-    const renderer = new Renderer(container, Renderer.Backends.SVG);
-    renderer.resize(520, 150);
-    const context = renderer.getContext();
-    const stave = new Stave(10, 20, 480);
-    stave.addClef(container.dataset.clef || "treble").setContext(context).draw();
+  const renderStaffs = () => {
+    document.querySelectorAll("[data-staff]").forEach((container) => {
+      const renderer = new Renderer(container, Renderer.Backends.SVG);
+      renderer.resize(520, 150);
+      const context = renderer.getContext();
+      const stave = new Stave(10, 20, 480);
+      stave.addClef(container.dataset.clef || "treble").setContext(context).draw();
 
-    const noteTokens = (container.dataset.notes || "c/4/q,d/4/q,e/4/q,f/4/q").split(",");
-    const notes = noteTokens.map((note) => {
-      const [letter, octave, duration] = note.split("/");
-      const key = `${letter}/${octave}`;
-      return new StaveNote({ keys: [key], duration: duration.replace(/\.$/, "") });
+      const noteTokens = (container.dataset.notes || "c/4/q,d/4/q,e/4/q,f/4/q").split(",");
+      const notes = noteTokens.map((note) => {
+        const [pitch, octave, duration] = note.split("/");
+        const accidental = pitch.slice(1);
+        const letter = pitch[0];
+        const key = `${letter}/${octave}`;
+        const staveNote = new StaveNote({ keys: [key], duration: duration.replace(/\.$/, "") });
+        if (accidental) staveNote.addModifier(new Accidental(accidental), 0);
+        return staveNote;
+      });
+      const totalBeats = noteTokens.reduce((sum, token) => sum + parseNoteToken(token).beats, 0);
+      const voice = new Voice({ numBeats: totalBeats, beatValue: 4 });
+      voice.addTickables(notes);
+      new Formatter().joinVoices([voice]).format([voice], 390);
+      voice.draw(context, stave);
+
+      if (container.dataset.midi !== "off") {
+        const bpm = Number(container.dataset.tempo) || 100;
+        attachPlayer(container, noteTokens, bpm);
+      }
     });
-    const totalBeats = noteTokens.reduce((sum, token) => sum + parseNoteToken(token).beats, 0);
-    const voice = new Voice({ numBeats: totalBeats, beatValue: 4 });
-    voice.addTickables(notes);
-    new Formatter().joinVoices([voice]).format([voice], 390);
-    voice.draw(context, stave);
+  };
 
-    if (container.dataset.midi !== "off") {
-      const bpm = Number(container.dataset.tempo) || 100;
-      attachPlayer(container, noteTokens, bpm);
-    }
-  });
+  document.fonts.ready.then(renderStaffs);
 });
