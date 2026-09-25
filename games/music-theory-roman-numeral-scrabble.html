@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Theory Roman Numeral Scrabble | Game Rules</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #fafafa;
+            --surface: #ffffff;
+            --primary: #2563eb;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --font-serif: 'Lora', serif;
+            --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--background);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+        }
+
+        header {
+            padding: 1rem 0;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        nav, main {
+            width: min(100% - 2rem, 960px);
+            margin: 0 auto;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 2.5rem 0;
+        }
+
+        .game-sheet {
+            min-height: 65vh;
+            padding: clamp(1.25rem, 5vw, 3rem);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .eyebrow {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            max-width: 22ch;
+            margin-bottom: 1.5rem;
+            font-family: var(--font-sans);
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            line-height: 1.2;
+        }
+
+        .rules-content {
+            border-top: 2px solid var(--primary);
+        }
+
+        .rules-section {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-family: var(--font-sans);
+            font-size: 1.35rem;
+            font-weight: 600;
+        }
+
+        .rules-section > summary {
+            cursor: pointer;
+        }
+
+        .rules-section > summary .section-title {
+            margin-bottom: 0;
+        }
+
+        .rules-section[open] > summary .section-title {
+            margin-bottom: 0.75rem;
+        }
+
+        .cadences-section {
+            margin: 1rem 0;
+            padding: 1.25rem;
+            background: #eff6ff;
+            border: 2px solid var(--primary);
+            border-left-width: 6px;
+            border-radius: 0.5rem;
+        }
+
+        .cadences-section > summary .section-title {
+            color: var(--primary);
+        }
+
+        .rules-section p {
+            margin-bottom: 0.75rem;
+        }
+
+        .rules-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .rules-section ol,
+        .rules-section ul {
+            padding-left: 1.4rem;
+        }
+
+        .rules-section li + li {
+            margin-top: 0.4rem;
+        }
+
+        .move-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            list-style: none;
+            padding: 0 !important;
+        }
+
+        .move-list li {
+            margin: 0 !important;
+            padding: 0.35rem 0.7rem;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.25rem;
+            font-weight: 600;
+        }
+
+        .cadence-table-wrap {
+            overflow-x: auto;
+        }
+
+        .cadence-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .cadence-table th,
+        .cadence-table td {
+            padding: 0.7rem 0.8rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .cadence-table th {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .deck-table {
+            min-width: 620px;
+        }
+
+        .deck-table td:last-child,
+        .deck-table th:last-child {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .color-key {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .color-swatch {
+            width: 0.8rem;
+            height: 0.8rem;
+            flex: 0 0 auto;
+            border: 1px solid rgba(15, 23, 42, 0.18);
+            border-radius: 2px;
+        }
+
+        .swatch-teal {
+            background: #14b8a6;
+        }
+
+        .swatch-amber {
+            background: #f59e0b;
+        }
+
+        .swatch-coral {
+            background: #f87171;
+        }
+
+        .deck-subheading {
+            margin: 1.25rem 0 0.5rem;
+            font-family: var(--font-sans);
+            font-size: 1.1rem;
+        }
+
+        .card-template {
+            width: min(100%, 220px);
+            aspect-ratio: 5 / 7;
+            position: relative;
+            display: grid;
+            grid-template-rows: 1fr auto;
+            align-items: center;
+            padding: 1rem;
+            background: #fef3c7;
+            border: 2px solid #d97706;
+            border-radius: 0.5rem;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .card-function {
+            position: absolute;
+            top: 0.65rem;
+            left: 0.7rem;
+            font-weight: 700;
+        }
+
+        .card-numeral {
+            align-self: center;
+            font-family: var(--font-serif);
+            font-size: 4rem;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .card-degrees {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .house-rule-list {
+            list-style: none;
+            padding: 0 !important;
+            counter-reset: house-rules;
+        }
+
+        .house-rule-list li {
+            position: relative;
+            padding: 0.2rem 0 0.2rem 2.25rem;
+            counter-increment: house-rules;
+        }
+
+        .house-rule-list li::before {
+            position: absolute;
+            left: 0;
+            top: 0.15rem;
+            width: 1.55rem;
+            height: 1.55rem;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            content: counter(house-rules);
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .house-rule-list li + li {
+            margin-top: 0.65rem;
+        }
+
+        .cadence-table td:last-child,
+        .cadence-table th:last-child {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .rule-note {
+            margin-top: 1rem;
+            padding: 0.85rem 1rem;
+            background: #f8fafc;
+            border-left: 3px solid var(--primary);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                padding: 1rem 0;
+            }
+
+            .game-sheet {
+                min-height: 80vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../index.html" class="logo">Game Rules</a>
+        </nav>
+    </header>
+
+    <main>
+        <article class="game-sheet">
+            <p class="eyebrow">Game Rules</p>
+            <h1>Music Theory Roman Numeral Scrabble</h1>
+            <div class="rules-content" aria-label="Game rules">
+                <details class="rules-section" aria-labelledby="setup-heading" open>
+                    <summary><span class="section-title" id="setup-heading" role="heading" aria-level="2">Setup and goal</span></summary>
+                    <p>Players use custom cards marked with Roman numerals. Each numeral represents a diatonic chord from a key.</p>
+                    <p>Before shuffling, remove one I card from the deck. Shuffle the remaining cards, then place the removed I face-up in the center of the table as the fixed starting Tonic. This shared I is the first chord of the opening phrase and does not count toward any player's hand size.</p>
+                    <ul>
+                        <li>Two players: deal 10 cards to each player.</li>
+                        <li>Three players: deal 7 cards to each player.</li>
+                        <li>Four players: deal 5 cards to each player.</li>
+                    </ul>
+                    <p>The round ends immediately when a player has no cards left in their hand, or when the draw pile is empty and no player can make a legal play. Compare scores; the highest score wins.</p>
+                </details>
+
+                <details class="rules-section cadences-section" aria-labelledby="cadences-heading" open>
+                    <summary><span class="section-title" id="cadences-heading" role="heading" aria-level="2">Legal cadences and points</span></summary>
+                    <h3 class="deck-subheading">Allowed function transitions</h3>
+                    <p>A phrase must follow these transitions:</p>
+                    <ul class="move-list" aria-label="Legal transitions">
+                        <li>T &rarr; S</li>
+                        <li>T &rarr; D</li>
+                        <li>S &rarr; T</li>
+                        <li>S &rarr; D</li>
+                        <li>D &rarr; T</li>
+                    </ul>
+                    <p><strong>T</strong> = tonic, <strong>S</strong> = subdominant, and <strong>D</strong> = dominant.</p>
+                    <div class="cadence-table-wrap">
+                        <table class="cadence-table">
+                            <thead>
+                                <tr><th scope="col">Phrase</th><th scope="col">Pattern</th><th scope="col">Points</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Natural Cadence</td><td>T &rarr; D &rarr; T</td><td>1</td></tr>
+                                <tr><td>Plagal Cadence (“Amen”)</td><td>T &rarr; S &rarr; T</td><td>0</td></tr>
+                                <tr><td>Full Cadence</td><td>T &rarr; S &rarr; D &rarr; T</td><td>2</td></tr>
+                                <tr><td>Half Cadence</td><td>T &rarr; D</td><td>0</td></tr>
+                                <tr><td>Approach</td><td>T &rarr; S &rarr; D</td><td>0</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="rule-note">A Half Cadence or Approach can be resolved by any player on a later turn. The resolving player scores the points for the completed phrase in the table above, plus an additional 2 points for resolving it.</p>
+                </details>
+
+                <details class="rules-section" aria-labelledby="intersections-heading" open>
+                    <summary><span class="section-title" id="intersections-heading" role="heading" aria-level="2">Connecting perpendicular phrases</span></summary>
+                    <p>When a horizontal phrase crosses a vertical phrase, the card at the intersection must be the identical Roman numeral in both directions. The chord itself is the shared letter.</p>
+                    <p>For example, an IV card can be the middle of a horizontal I–IV–V phrase and the starting card of a vertical IV–V phrase.</p>
+                    <h3 class="deck-subheading">Optional advanced rule: Shared tone</h3>
+                    <p>Instead of requiring an identical chord at the intersection, allow two different chords to cross if they share at least one scale-degree tone. For example, I (1–3–5) and vi (6–1–3) can intersect because both contain scale degrees 1 and 3.</p>
+                    <p class="rule-note">The shared-tone rule is harder to track and begins to teach voice leading rather than only function. Use it once players are comfortable with the base game.</p>
+                </details>
+
+                <details class="rules-section" aria-labelledby="turn-heading" open>
+                    <summary><span class="section-title" id="turn-heading" role="heading" aria-level="2">Turn structure</span></summary>
+                    <p>The first player lays down cards to build a legal phrase connected to the fixed starting I and scores its listed points. On each turn after that, choose one of these actions:</p>
+                    <ol type="A">
+                        <li><strong>Play a phrase.</strong> Play one or more cards from your hand to extend an existing line horizontally or vertically, Scrabble-style. Your play must connect to at least one card already on the table, and every horizontal or vertical run created by the play must follow the allowed function transitions under Legal cadences and points.</li>
+                        <li><strong>Draw.</strong> If you cannot make a legal play, draw one card from the deck. Your turn ends immediately; you cannot play a card on the same turn you draw.</li>
+                    </ol>
+                    <p>Hands are never refilled after a successful play. Your hand only shrinks when you play cards and grows when you draw, so play moves you toward having no cards left.</p>
+                </details>
+
+                <details class="rules-section" aria-labelledby="house-rules-heading" open>
+                    <summary><span class="section-title" id="house-rules-heading" role="heading" aria-level="2">Suggested progression of house rules</span></summary>
+                    <p>Introduce additional cards and rules over successive sessions as players gain confidence:</p>
+                    <ol class="house-rule-list">
+                        <li><strong>Session 1:</strong> Use the Beginner deck (I, IV, V, vi only) and shared-chord intersections only.</li>
+                        <li><strong>Session 2:</strong> Switch to the Standard deck by adding ii, iii, and vii&deg;.</li>
+                        <li><strong>Session 3:</strong> Add secondary dominants and borrowed chords.</li>
+                        <li><strong>Session 4:</strong> Switch on the shared-tone intersection rule for extra difficulty.</li>
+                    </ol>
+                </details>
+
+                <details class="rules-section" aria-labelledby="deck-heading">
+                    <summary><span class="section-title" id="deck-heading" role="heading" aria-level="2">How to make the deck</span></summary>
+                    <p>Print one Roman numeral per blank card. If your cards allow it, color-code them by function so legal moves are easy to check during play.</p>
+                    <h3 class="deck-subheading">Standard deck (44 cards)</h3>
+                    <div class="cadence-table-wrap">
+                        <table class="cadence-table deck-table">
+                            <thead>
+                                <tr><th scope="col">Roman numeral</th><th scope="col">Function</th><th scope="col">Scale degrees (1 = do)</th><th scope="col">Suggested color</th><th scope="col">Count</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>I</td><td>Tonic</td><td>1-3-5</td><td><span class="color-key"><span class="color-swatch swatch-teal" aria-hidden="true"></span>Teal</span></td><td>10</td></tr>
+                                <tr><td>vi</td><td>Tonic</td><td>6-1-3</td><td><span class="color-key"><span class="color-swatch swatch-teal" aria-hidden="true"></span>Teal</span></td><td>6</td></tr>
+                                <tr><td>iii</td><td>Tonic</td><td>3-5-7</td><td><span class="color-key"><span class="color-swatch swatch-teal" aria-hidden="true"></span>Teal</span></td><td>4</td></tr>
+                                <tr><td>IV</td><td>Subdominant</td><td>4-6-1</td><td><span class="color-key"><span class="color-swatch swatch-amber" aria-hidden="true"></span>Amber</span></td><td>8</td></tr>
+                                <tr><td>ii</td><td>Subdominant</td><td>2-4-6</td><td><span class="color-key"><span class="color-swatch swatch-amber" aria-hidden="true"></span>Amber</span></td><td>5</td></tr>
+                                <tr><td>V</td><td>Dominant</td><td>5-7-2</td><td><span class="color-key"><span class="color-swatch swatch-coral" aria-hidden="true"></span>Coral</span></td><td>8</td></tr>
+                                <tr><td>vii&deg;</td><td>Dominant</td><td>7-2-4</td><td><span class="color-key"><span class="color-swatch swatch-coral" aria-hidden="true"></span>Coral</span></td><td>3</td></tr>
+                                <tr><th scope="row" colspan="4">Total</th><td>44</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="rule-note">The counts are weighted to reflect how often each chord appears in real music: I, IV, and V are common, while vii&deg; is rare. That imbalance builds frequency intuition and makes rare chords satisfying to place.</p>
+                    <h3 class="deck-subheading">Beginner deck (32 cards)</h3>
+                    <p>For a first play-through or younger learners, use only I (10), IV (8), V (8), and vi (6). Leave ii, iii, and vii&deg; out of the deck.</p>
+                    <h3 class="deck-subheading">Advanced add-on (+13 cards)</h3>
+                    <p>Add these cards to the standard deck for experienced players:</p>
+                    <div class="cadence-table-wrap">
+                        <table class="cadence-table deck-table">
+                            <thead>
+                                <tr><th scope="col">Card</th><th scope="col">Function</th><th scope="col">Rule</th><th scope="col">Count</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>V/V</td><td>Dominant</td><td>Must be played immediately before V.</td><td>3</td></tr>
+                                <tr><td>V/ii</td><td>Dominant</td><td>Must be played immediately before ii.</td><td>2</td></tr>
+                                <tr><td>V/vi</td><td>Dominant</td><td>Must be played immediately before vi.</td><td>2</td></tr>
+                                <tr><td>iv (borrowed)</td><td>Subdominant</td><td>Minor iv; follows the same rules as IV.</td><td>2</td></tr>
+                                <tr><td>bVI</td><td>Tonic</td><td>Borrowed chord; follows the same rules as vi.</td><td>2</td></tr>
+                                <tr><td>bVII</td><td>Dominant</td><td>Borrowed chord; follows the same rules as V.</td><td>2</td></tr>
+                                <tr><th scope="row" colspan="3">Add-on total</th><td>13</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="rule-note">Secondary dominants (V/V, V/ii, and V/vi) are locked to their targets: they can only be placed immediately before the named chord, respectively V, ii, or vi. This target resolution overrides the basic function graph when needed, such as V/V &rarr; V and V/ii &rarr; ii.</p>
+                </details>
+
+                <details class="rules-section" aria-labelledby="card-template-heading">
+                    <summary><span class="section-title" id="card-template-heading" role="heading" aria-level="2">Card template for printing</span></summary>
+                    <p>For each blank card, write the Roman numeral large and centered, the scale degrees in small type along the bottom, and the function letter in a corner. Color the card face or add a corner sticker by function: teal for Tonic, amber for Subdominant, and coral for Dominant.</p>
+                    <div class="card-template" role="img" aria-label="Example card: IV large and centered, S in the upper-left corner, and scale degrees 4, 6, 1 along the bottom. Amber indicates Subdominant function.">
+                        <span class="card-function">[S]</span>
+                        <span class="card-numeral">IV</span>
+                        <span class="card-degrees">4 &ndash; 6 &ndash; 1</span>
+                    </div>
+                    <p class="rule-note">Color-coding lets players scan the table and check legality at a glance without recalculating the function of every chord on each turn.</p>
+                </details>
+
+                <details class="rules-section" aria-labelledby="key-selection-heading">
+                    <summary><span class="section-title" id="key-selection-heading" role="heading" aria-level="2">Optional Rule: Key Signature Selection</span></summary>
+                    <p>Before starting, choose a difficulty level that matches your comfort with music theory and dice rolling.</p>
+                    <ol>
+                        <li><strong>Level 1: Beginner.</strong> Choose any key signature you prefer. C major or A minor are recommended choices.</li>
+                        <li><strong>Level 2a: Intermediate (Major/Minor).</strong> Roll for the key quality: even means major and odd means minor. Then choose the tonic. For example, a 4 gives major; choose A to play in A major.</li>
+                        <li><strong>Level 2b: Intermediate (Tonic).</strong> Roll to determine the tonic, then choose major or minor. For example, a 3 gives C; choose minor to play in C minor.</li>
+                        <li><strong>Level 3: Advanced.</strong> Combine both dice rolls for complete randomization: use one result for the tonic and the other for major or minor quality. For example, a 10 gives G for the tonic, and a 5 gives odd/minor, resulting in G minor.</li>
+                        <li><strong>Level 4: Expert.</strong> Create a custom mapping for musical modes.</li>
+                    </ol>
+                    <p>For Levels 2b and 3, use this tonic mapping: 1 = A; 2 = A#/Bb; 3 = C; 4 = C#/Db; 5 = D; 6 = D#/Eb; 7 = E; 8 = F; 9 = F#/Gb; 10 = G; 11 = G#/Ab; 12 = the current player's choice of key.</p>
+                    <p>After choosing a level and key, play the progression on a keyboard in the selected key, following the difficulty level you chose.</p>
+                </details>
+            </div>
+        </article>
+    </main>
+</body>
+</html>
