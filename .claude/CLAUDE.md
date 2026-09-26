@@ -28,6 +28,16 @@ Shared visual conventions include Lora and Manrope loaded from Google Fonts on m
 - Progress is stored in `window.currentProgress`, so it lasts only for the current page session and is not persisted in localStorage.
 - Main DOM hooks are `#currentDate`, `#progressText`, and `#bingoBoard`.
 
+### Rhyming Beat Game
+
+- Entry page: `hobbies/rhyming-game.html`
+- Styles: `hobbies/css/rhyming-game.css`
+- Behavior: `hobbies/js/rhyming-game.js`
+- Generates a 24-line, four-beat grid with 12 randomized prompt words, each paired with an answer line. The prompt can appear on either line in each pair.
+- Beat placement supports random easy beats (2 or 4), any random beat, or a fixed beat. Rhyme placement supports first/second line, easy switching, and hard switching; changing either setting regenerates the grid.
+- Autoscroll uses `requestAnimationFrame` at 32, 45, or 80 pixels per second, or can be disabled. Its selector restarts scrolling without regenerating the words.
+- `wordBank` is deduplicated and shuffled for each new grid. The game has no separate data file or persistence.
+
 ## Music Theory Projects
 
 ### Chord Notes and Scale Finder
@@ -85,6 +95,16 @@ Shared visual conventions include Lora and Manrope loaded from Google Fonts on m
 - Note-name spelling is intentionally simplified to sharp names (`C#`, `D#`, etc.), even when the user enters an enharmonic flat root. Supported typed qualities include triads, sus2/sus4, augmented/diminished forms, sevenths, add9, 9, 11, and 13 variants. Unsupported symbols produce a status message in `#inputMessage`.
 - Keep the four-string ordering, pitch-class modulo-12 matching, chord interval/degree tables, and relative script/style paths synchronized when changing the trainer. There is no configured build or test runner; use editor diagnostics and browser checks from the repository root for validation.
 
+### Cello Chord Tone Trainer
+
+- Entry page: `music_theory/cello-chord-tone-trainer.html`
+- Styles: `music_theory/css/cello-chord-tone-trainer.css`
+- Behavior: `music_theory/js/cello-chord-tone-trainer.js`
+- Renders chord-tone markers on a standard four-string cello fretboard. The SVG displays strings high-to-low as `A-D-G-C` (pitch classes `9-2-7-0`) and supports open position through fret 12 or 20.
+- Uses the same octave-independent pitch-class matching approach as the bass trainer. Easy mode generates diatonic triads, medium mode sevenths/add9 chords, and hard mode extended chords or parallel major/minor triads.
+- Supports typed chords with one-letter roots and an optional sharp/flat, including triads, suspended/augmented/diminished chords, sevenths, add9, and 9/11/13 forms. Unsupported input is reported in `#inputMessage`.
+- Main DOM hooks include `#fretboard`, `#legend`, `#keySelect`, `#difficultySelect`, `#fretRangeSelect`, `#randomizeButton`, `#chordInput`, and `#plotChordButton`. SVG creation and chord-generation logic are inline in the behavior script; there is no external data or framework.
+
 ### Diatonic Chord Reference
 
 - Entry page: `music_theory/diatonic_chord_reference.html`
@@ -114,6 +134,15 @@ Shared visual conventions include Lora and Manrope loaded from Google Fonts on m
 - `site.js` renders each `[data-staff]` block with VexFlow and automatically appends a "Play" button plus a volume slider (`.staff-player`) below it. Playback synthesizes the notes as short triangle-wave tones via the Web Audio API directly in the browser — there is no external MIDI file, audio asset, or added dependency. `data-tempo` sets BPM (default 100) and `data-midi="off"` suppresses the player for a given example.
 - Known gotcha: VexFlow 5's `Voice` constructor requires camelCase `{ numBeats, beatValue }`. The snake_case `num_beats`/`beat_value` silently throws `BadArgument: Too many ticks` once an example mixes non-quarter-note durations (e.g. a half note), even though pure-quarter-note examples happen to work by coincidence.
 - To add a new worked example to any chapter page, just add another `[data-staff]` div to its `.prose`; no other wiring is needed.
+
+## Game Rules
+
+### Music Theory Roman Numeral Scrabble
+
+- Entry page: `games/music-theory-roman-numeral-scrabble.html`
+- This is a static rules page with inline CSS and no JavaScript or separate assets.
+- Players build horizontal/vertical chord phrases from Roman-numeral cards, starting from a shared face-up I. Legal function transitions are T→S, T→D, S→T, S→D, and D→T; intersections normally require the same numeral in both directions.
+- The rules define two-to-four-player hand sizes, cadence scoring, drawing, deck composition, and optional advanced cards/rules. Preserve consistency between transition legality, cadence scoring, and the secondary-dominant target restrictions if editing the rules.
 
 ## Working And Validation
 
